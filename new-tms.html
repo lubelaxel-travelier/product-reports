@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEW TMS NEGOCIOS — Reporte Estatico 08/06/2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://sisorg.com/favicon.png" type="image/png">
+  <style>
+    :root {
+      --sis-primary:      hsl(152 69% 27%);
+      --sis-primary-dark: hsl(152 69% 22%);
+      --sis-primary-mid:  hsl(152 69% 32%);
+      --sis-primary-soft: hsl(152 50% 75%);
+      --sis-primary-wash: hsl(152 60% 96%);
+      --sis-deep:         hsl(152 64% 11%);
+      --sis-accent:       hsl(24 85% 60%);
+      --sis-accent-light: hsl(24 90% 75%);
+      --sis-accent-wash:  hsl(24 85% 96%);
+      --sis-bg:           #FFFFFF;
+      --sis-bg-muted:     hsl(220 14% 96%);
+      --sis-bg-soft:      hsl(220 14% 98%);
+      --sis-border:       hsl(220 13% 91%);
+      --sis-border-strong:hsl(220 13% 84%);
+      --sis-ink:          hsl(220 20% 20%);
+      --sis-ink-soft:     hsl(220 10% 46%);
+      --sis-ink-mute:     hsl(220 10% 60%);
+      --sis-destructive:      hsl(0 84% 60%);
+      --sis-destructive-wash: hsl(0 84% 97%);
+      --gradient-green: linear-gradient(135deg, hsl(152 69% 22%) 0%, hsl(152 69% 32%) 100%);
+      --gradient-deep:  linear-gradient(135deg, hsl(152 64% 11%) 0%, hsl(152 69% 22%) 100%);
+      --radius:      .5rem;
+      --radius-lg:   .75rem;
+      --radius-pill: 9999px;
+      --shadow-sm: 0 1px 2px rgba(10,45,25,.05), 0 2px 8px rgba(10,45,25,.04);
+      --shadow-md: 0 2px 6px rgba(10,45,25,.06), 0 12px 32px rgba(10,45,25,.07);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Inter", system-ui, sans-serif; color: var(--sis-ink); background: var(--sis-bg-muted); min-height: 100vh; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: "Sora", sans-serif; margin: 0; }
+    .header { background: var(--gradient-deep); padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-logo { height: 32px; }
+    .header h1 { font-size: 32px; font-weight: 500; color: #fff; letter-spacing: -0.02em; }
+    .header .status { display: flex; align-items: center; gap: 8px; font-family: "Inter", sans-serif; font-size: 13px; color: var(--sis-primary-soft); }
+    .header .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; padding: 24px 48px; }
+    .kpi { background: var(--sis-bg); border: 1px solid var(--sis-border); border-top: 3px solid var(--sis-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 20px 24px; text-align: center; transition: transform .25s ease; }
+    .kpi:hover { transform: translateY(-2px); }
+    .kpi .label { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sis-deep); }
+    .kpi .value { font-family: "Sora", sans-serif; font-weight: 400; font-size: 32px; margin-top: 8px; color: var(--sis-deep); }
+    .kpi .value.primary { color: var(--sis-primary); }
+    .okr-section { padding: 24px 48px 0; }
+    .okr-header h3 { font-family: "Sora", sans-serif; font-weight: 600; font-size: 18px; color: var(--sis-deep); margin-bottom: 16px; letter-spacing: -0.005em; }
+    .okr-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .okr-card { background: var(--sis-bg); border: 1px solid var(--sis-border); border-left: 4px solid var(--sis-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .okr-number { font-family: "Sora", sans-serif; font-weight: 600; font-size: 16px; letter-spacing: -0.01em; color: var(--sis-deep); padding-bottom: 4px; border-bottom: 2px solid var(--sis-primary); display: inline-block; }
+    .okr-text { font-family: "Inter", sans-serif; font-size: 14px; line-height: 1.5; color: var(--sis-ink); }
+    .okr-progress { display: flex; align-items: center; gap: 12px; }
+    .okr-bar { flex: 1; height: 8px; background: var(--sis-bg-muted); border-radius: 4px; overflow: hidden; }
+    .okr-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+    .okr-pct { font-family: "Sora", sans-serif; font-weight: 600; font-size: 14px; min-width: 48px; text-align: right; }
+    .okr-pct-header { font-family: "Sora", sans-serif; font-weight: 600; font-size: 20px; }
+    .chart-section { padding: 0 48px 24px; display: grid; gap: 16px; }
+    .chart-box { background: var(--sis-bg); border: 1px solid var(--sis-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 24px 28px; }
+    .chart-box h3 { font-family: "Sora", sans-serif; font-weight: 600; font-size: 18px; color: var(--sis-deep); margin-bottom: 16px; letter-spacing: -0.005em; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; }
+    .chart-box h3::after { content: 'u25B2'; font-size: 12px; color: var(--sis-ink-mute); transition: transform .2s ease; }
+    .chart-box.collapsed h3::after { transform: rotate(180deg); }
+    .chart-box.collapsed .chart-content { display: none; }
+    canvas { width: 100% !important; }
+    .table-wrapper { padding: 0 48px 16px; overflow-x: auto; }
+    .table-collapse-header { background: var(--sis-bg); border: 1px solid var(--sis-border); border-bottom: none; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 16px 24px; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; }
+    .table-collapse-header h3 { font-family: "Sora", sans-serif; font-weight: 600; font-size: 18px; color: var(--sis-deep); letter-spacing: -0.005em; }
+    .table-collapse-header::after { content: 'u25B2'; font-size: 12px; color: var(--sis-ink-mute); transition: transform .2s ease; }
+    .table-wrapper.collapsed .table-collapse-header::after { transform: rotate(180deg); }
+    .table-wrapper.collapsed .table-collapse-header { border-radius: var(--radius-lg); border-bottom: 1px solid var(--sis-border); }
+    .table-wrapper.collapsed .table-collapsible { display: none; }
+    .table-wrapper table { width: 100%; border-collapse: collapse; background: var(--sis-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+    thead { background: var(--sis-bg-muted); }
+    th { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px 16px; text-align: center; color: var(--sis-deep); border-bottom: 2px solid var(--sis-primary); background: var(--sis-primary-wash); }
+    th:first-child { text-align: left; }
+    td { font-family: "Inter", sans-serif; font-size: 14px; padding: 12px 16px; color: var(--sis-ink); border-bottom: 1px solid var(--sis-border); text-align: center; }
+    td:first-child { text-align: left; }
+    tr:hover td { background: var(--sis-bg-soft); }
+    .chip { display: inline-block; font-family: "Poppins", sans-serif; font-weight: 500; font-size: 10.5px; letter-spacing: .08em; padding: 3px 11px; border-radius: var(--radius-pill); }
+    .chip-prod { background: var(--sis-primary-wash); color: var(--sis-primary); }
+    .chip-test { background: var(--sis-accent-wash); color: var(--sis-accent); }
+    .chip-reprogramado { background: hsla(45, 90%, 55%, 0.15); color: hsl(45, 90%, 40%); }
+    .chip-programado { background: hsla(210, 80%, 55%, 0.15); color: hsl(210, 80%, 40%); }
+    .chip-analisis { background: hsla(270, 60%, 55%, 0.15); color: hsl(270, 60%, 40%); }
+    .chip-pendiente { background: hsl(220 14% 96%); color: hsl(220 10% 46%); }
+    .step-progress { display:flex; align-items:center; gap:8px; }
+    .step-bar { flex:1; height:6px; background:hsl(220 14% 96%); border-radius:3px; overflow:hidden; max-width:180px; }
+    .step-fill { height:100%; border-radius:3px; }
+    .step-pct { font-family:"Sora",sans-serif; font-weight:600; font-size:13px; min-width:36px; }
+    .footer { text-align: center; padding: 20px 48px; font-size: 12px; color: var(--sis-ink-mute); border-top: 1px solid var(--sis-border); background: var(--sis-bg); }
+    .next-steps-wrapper.collapsed .next-steps-content { display:none; }
+    .next-steps-wrapper.collapsed .table-collapse-header { border-radius:var(--radius-lg); border-bottom:1px solid var(--sis-border); }
+    .step-item { display:flex; align-items:flex-start; gap:16px; padding:16px 20px; background:var(--sis-bg-soft); border-radius:var(--radius-lg); border-left:4px solid var(--sis-primary); transition: transform .2s ease; }
+    .step-item:hover { transform:translateX(4px); }
+    .step-icon { width:32px; height:32px; min-width:32px; border-radius:50%; background:var(--sis-primary); color:#fff; font-family:"Sora",sans-serif; font-weight:600; font-size:14px; display:flex; align-items:center; justify-content:center; }
+    .step-body { flex:1; }
+    .step-title { font-family:"Inter",sans-serif; font-weight:600; font-size:15px; color:var(--sis-ink); line-height:1.4; }
+    .step-meta { font-family:"Poppins",sans-serif; font-weight:500; font-size:11px; color:var(--sis-ink-mute); margin-top:4px; letter-spacing:0.05em; }
+    .hidden { display:none; }
+    .jira-table { width:100%; border-collapse:collapse; background:var(--sis-bg); border-radius:var(--radius); overflow:hidden; font-size:13px; }
+    .jira-table th { font-size:10px; padding:10px 12px; background:var(--sis-bg-muted); border-bottom:1px solid var(--sis-border); }
+    .jira-table td { padding:8px 12px; border-bottom:1px solid var(--sis-border); }
+    .jira-link { color:var(--sis-primary); text-decoration:none; font-weight:600; font-family:"Inter",sans-serif; }
+    .jira-link:hover { text-decoration:underline; }
+    .static-date { font-family:"Inter",sans-serif; font-size:12px; padding:4px 8px; border:1px solid var(--sis-border); border-radius:var(--radius); font-weight:500; display:inline-block; white-space:nowrap; }
+    .jira-toggle { cursor:pointer; font-size:12px; color:var(--sis-ink-mute); user-select:none; padding:4px 8px; white-space:nowrap; }
+    @media (max-width:1100px) { .header,.kpi-row,.table-wrapper,.footer { padding-left:32px; padding-right:32px; } .okr-section { padding-left:32px; padding-right:32px; } .next-steps-wrapper { padding-left:32px !important; padding-right:32px !important; } }
+    @media (max-width:780px) { .okr-cards { grid-template-columns:1fr; } .header { flex-direction:column; gap:16px; padding:24px 22px; } .kpi-row,.table-wrapper,.footer { padding-left:22px; padding-right:22px; } .okr-section,.next-steps-wrapper { padding-left:22px !important; padding-right:22px !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <img src="https://sisorg.com/images/logo.png" alt="SISORG" class="header-logo">
+      <div>
+        <h1>NEW TMS - STATUS Y OKRs</h1>
+      </div>
+    </div>
+    <div class="status">
+      <span class="dot" style="background:var(--sis-primary)"></span>
+      <span>Reporte est&#225;tico &#8212; 08/06/2026</span>
+    </div>
+  </div>
+
+  <!-- OKRs Q2 -->
+  <div class="okr-section">
+    <div class="okr-header"><h3>OKRs Q2 2026</h3></div>
+    <div class="okr-cards">
+      <div class="okr-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="okr-number">KR1</div>
+          <span class="okr-pct-header" style="color:hsl(210,40%,50%)">60%</span>
+        </div>
+        <div class="okr-text">POS module delivered and 100% operational in at least <strong>5 large clients</strong> in Argentina and Colombia, meeting all operational and regulatory requirements.</div>
+        <div class="okr-progress">
+          <div class="okr-bar"><div class="okr-fill" style="width:60%;background:hsl(210,40%,65%)"></div></div>
+          <span class="okr-pct" style="color:hsl(210,40%,50%)">3/5</span>
+        </div>
+      </div>
+      <div class="okr-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="okr-number">KR2</div>
+          <span class="okr-pct-header" style="color:var(--sis-accent)">30%</span>
+        </div>
+        <div class="okr-text">New TMS fully in use (POS + core operations active) by at least <strong>10 mid-size-and-up clients</strong> across Argentina and Colombia.</div>
+        <div class="okr-progress">
+          <div class="okr-bar"><div class="okr-fill" style="width:30%;background:var(--sis-accent)"></div></div>
+          <span class="okr-pct" style="color:var(--sis-accent)">3/10</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi"><div class="label">Empresas Activas</div><div class="value">7</div></div>
+    <div class="kpi"><div class="label">Total Agencias</div><div class="value">11</div></div>
+    <div class="kpi"><div class="label">Total Transacciones</div><div class="value">522</div></div>
+    <div class="kpi"><div class="label">Tickets Vendidos</div><div class="value primary">711</div></div>
+  </div>
+
+  <!-- GRAFICO LINEA -->
+  <div class="chart-section" style="grid-template-columns:1fr;">
+    <div class="chart-box" id="boxLine">
+      <h3 onclick="this.parentElement.classList.toggle('collapsed')">Tickets por D&#237;a</h3>
+      <div class="chart-content" style="height:250px;"><canvas id="chartLine"></canvas></div>
+    </div>
+  </div>
+
+  <!-- GRAFICO BARRAS -->
+  <div class="chart-section" style="grid-template-columns:1fr;">
+    <div class="chart-box" id="boxClients">
+      <h3 onclick="this.parentElement.classList.toggle('collapsed')">Ranking de Empresas</h3>
+      <div class="chart-content" style="height:250px;"><canvas id="chartClients"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TABLA EMPRESAS -->
+  <div class="table-wrapper" id="wrapperEmpresas">
+    <div class="table-collapse-header" onclick="toggleWrapper('wrapperEmpresas')"><h3>Empresas</h3></div>
+    <table class="table-collapsible">
+      <thead><tr><th>Empresa</th><th>Status</th><th>Fecha</th><th>Oficinas</th><th>Usuarios</th><th>Transacciones</th><th>Tickets</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Vallecito</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">27/3/2026</span></td><td>1</td><td>5</td><td>204</td><td><strong>278</strong></td></tr>
+        <tr><td><strong>El Chalt&#233;n</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">26/3/2026</span></td><td>2</td><td>5</td><td>194</td><td><strong>233</strong></td></tr>
+        <tr><td><strong>Coop. Sportman</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">28/5/2026</span></td><td>3</td><td>4</td><td>49</td><td><strong>104</strong></td></tr>
+        <tr><td><strong>El Pr&#225;ctico</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">15/5/2026</span></td><td>1</td><td>3</td><td>33</td><td><strong>51</strong></td></tr>
+
+        <tr><td><strong>Caltur</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">28/5/2026</span></td><td>1</td><td>1</td><td>14</td><td><strong>15</strong></td></tr>
+        <tr><td><strong>La 20 de Junio</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">1/6/2026</span></td><td>1</td><td>1</td><td>7</td><td><strong>9</strong></td></tr>
+        <tr><td><strong>Grupo ERSA (Singer)</strong></td><td><span class="chip chip-prod">En Producci&#243;n</span></td><td><span class="static-date" style="border-color:var(--sis-primary);color:var(--sis-primary);background:var(--sis-primary-wash)">2/6/2026</span></td><td>1</td><td>1</td><td>3</td><td><strong>3</strong></td></tr>
+        <tr><td><strong>Tata R&#225;pido</strong></td><td><span class="chip chip-reprogramado">Reprogramado</span></td><td><span class="static-date" style="border-color:hsl(45,90%,40%);color:hsl(45,90%,40%);background:hsla(45,90%,55%,0.15)">15/6/2026</span></td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td></tr>
+        <tr><td><strong>Las Grutas</strong></td><td><span class="chip chip-programado">Programado</span></td><td><span class="static-date" style="border-color:hsl(210,80%,40%);color:hsl(210,80%,40%);background:hsla(210,80%,55%,0.15)">8/6/2026</span></td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td></tr>
+        <tr><td><strong>Transporte Rinc&#243;n</strong></td><td><span class="chip chip-programado">Programado</span></td><td><span class="static-date" style="border-color:hsl(210,80%,40%);color:hsl(210,80%,40%);background:hsla(210,80%,55%,0.15)">22/6/2026</span></td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td></tr>
+        <tr><td><strong>Transalianza</strong></td><td><span class="chip chip-reprogramado">Reprogramado</span></td><td><span class="static-date" style="border-color:hsl(45,90%,40%);color:hsl(45,90%,40%);background:hsla(45,90%,55%,0.15)">1/7/2026</span></td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td></tr>
+        <tr><td><strong>Coomotor</strong></td><td><span class="chip chip-pendiente">Pendiente</span></td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td></tr>
+        <tr><td><strong>Omega</strong></td><td><span class="chip chip-pendiente">Pendiente</span></td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td><td>&#8212;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PROXIMOS PASOS -->
+  <div class="next-steps-wrapper" id="wrapperPasos" style="padding:0 48px 16px;">
+    <div class="table-collapse-header" onclick="toggleNextSteps('wrapperPasos')" style="border-radius:var(--radius-lg) var(--radius-lg) 0 0;border:1px solid var(--sis-border);border-bottom:none;background:var(--sis-bg);padding:16px 24px;cursor:pointer;user-select:none;display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="font-family:'Sora',sans-serif;font-weight:600;font-size:18px;color:var(--sis-deep);">Pr&#243;ximos Pasos</h3>
+    </div>
+    <div class="next-steps-content" style="background:var(--sis-bg);border:1px solid var(--sis-border);border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:var(--shadow-sm);padding:24px 28px;">
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:16px;">
+
+        <li class="step-item" style="flex-direction:column">
+          <div style="display:flex;align-items:center;gap:16px;width:100%">
+            <div class="step-icon">1</div>
+            <div class="step-body">
+              <div class="step-title">Entregar desarrollo de La 20 de Junio</div>
+              <div class="step-meta">7 tickets &middot; 2 Done &middot; 1 In Progress &middot; 4 To Do</div>
+            </div>
+            <span class="chip chip-programado" style="align-self:center">EN PROCESO</span>
+            <span class="static-date" style="border-color:hsl(210,80%,40%);color:hsl(210,80%,40%);background:hsla(210,80%,55%,0.15)">22/06/2026</span>
+            <span class="jira-toggle" onclick="toggleJira(this)">Ver tickets &#9660;</span>
+          </div>
+          <div class="jira-list hidden" style="width:100%;margin-top:12px;">
+            <table class="jira-table">
+              <thead><tr><th style="text-align:left">Ticket</th><th style="text-align:left">Descripci&#243;n</th><th>Tipo</th><th>Estado</th><th>&#201;pica</th></tr></thead>
+              <tbody>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1426" target="_blank" class="jira-link">DEV-1426</a></td><td style="text-align:left">Acceso a CRM de Personas</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td><td>DEV-1401</td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1428" target="_blank" class="jira-link">DEV-1428</a></td><td style="text-align:left">Cambio de Pasajero en Ticket Emitido</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td><td>DEV-1401</td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1429" target="_blank" class="jira-link">DEV-1429</a></td><td style="text-align:left">Integraci&#243;n Mercado Pago POS</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td><td>DEV-1401</td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1430" target="_blank" class="jira-link">DEV-1430</a></td><td style="text-align:left">Integraci&#243;n Payway POS</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td><td>DEV-1401</td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1458" target="_blank" class="jira-link">DEV-1458</a></td><td style="text-align:left">Gesti&#243;n de orden de reimpresi&#243;n y motivos</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td><td>DEV-1403</td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1467" target="_blank" class="jira-link">DEV-1467</a></td><td style="text-align:left">Planta completa saltea rengl&#243;n</td><td>Bug</td><td><span class="chip chip-programado">TO DO</span></td><td>DEV-1361</td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1490" target="_blank" class="jira-link">DEV-1490</a></td><td style="text-align:left">Seguro de menor en ticket de mayor</td><td>Story</td><td><span class="chip chip-reprogramado">IN PROGRESS</span></td><td>DEV-1361</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+        <li class="step-item" style="flex-direction:column">
+          <div style="display:flex;align-items:center;gap:16px;width:100%">
+            <div class="step-icon">2</div>
+            <div class="step-body">
+              <div class="step-title">New TMS completo - Cliente chico/mediano</div>
+              <div class="step-meta">22 tickets &middot; 0 Done &middot; 0 In Progress &middot; 22 To Do</div>
+            </div>
+            <span class="chip chip-programado" style="align-self:center">EN PROCESO</span>
+            <span class="static-date" style="border-color:hsl(210,80%,40%);color:hsl(210,80%,40%);background:hsla(210,80%,55%,0.15)">15/10/2026</span>
+            <span class="jira-toggle" onclick="toggleJira(this)">Ver tickets &#9660;</span>
+          </div>
+          <div class="jira-list hidden" style="width:100%;margin-top:12px;">
+            <table class="jira-table">
+              <thead><tr><th style="text-align:left">Ticket</th><th style="text-align:left">Descripci&#243;n</th><th>Tipo</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1458" target="_blank" class="jira-link">DEV-1458</a></td><td style="text-align:left">Gesti&#243;n de orden de reimpresi&#243;n y motivos</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1520" target="_blank" class="jira-link">DEV-1520</a></td><td style="text-align:left">Gesti&#243;n de documentaci&#243;n y habilitaciones</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1521" target="_blank" class="jira-link">DEV-1521</a></td><td style="text-align:left">Configuraci&#243;n de comisiones de agencias</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1522" target="_blank" class="jira-link">DEV-1522</a></td><td style="text-align:left">Gesti&#243;n de grupos de afinidad y canales de venta</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1523" target="_blank" class="jira-link">DEV-1523</a></td><td style="text-align:left">Gesti&#243;n de clientes corporativos y convenios</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1524" target="_blank" class="jira-link">DEV-1524</a></td><td style="text-align:left">Gesti&#243;n de Reservas</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1525" target="_blank" class="jira-link">DEV-1525</a></td><td style="text-align:left">Gesti&#243;n de vouchers y c&#243;digos de descuento</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1526" target="_blank" class="jira-link">DEV-1526</a></td><td style="text-align:left">Gesti&#243;n de anticipos y partida de dinero</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1527" target="_blank" class="jira-link">DEV-1527</a></td><td style="text-align:left">Gesti&#243;n de penalidades y multas</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1528" target="_blank" class="jira-link">DEV-1528</a></td><td style="text-align:left">Gesti&#243;n de M&#233;todos de pago</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1529" target="_blank" class="jira-link">DEV-1529</a></td><td style="text-align:left">CRM Tipos de pasajero</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1530" target="_blank" class="jira-link">DEV-1530</a></td><td style="text-align:left">Gesti&#243;n de servicios auxiliares</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1532" target="_blank" class="jira-link">DEV-1532</a></td><td style="text-align:left">Cargos administrativos</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1533" target="_blank" class="jira-link">DEV-1533</a></td><td style="text-align:left">Gesti&#243;n de Cuentas Corrientes y Liquidaciones</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1534" target="_blank" class="jira-link">DEV-1534</a></td><td style="text-align:left">Gesti&#243;n de viajes y despachos</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1535" target="_blank" class="jira-link">DEV-1535</a></td><td style="text-align:left">Gesti&#243;n de conexiones de servicios</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1536" target="_blank" class="jira-link">DEV-1536</a></td><td style="text-align:left">POS - Validar l&#243;gica de Pasajeros frecuentes</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1537" target="_blank" class="jira-link">DEV-1537</a></td><td style="text-align:left">Gesti&#243;n de ticket ampliar</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1538" target="_blank" class="jira-link">DEV-1538</a></td><td style="text-align:left">Administraci&#243;n de caja</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1539" target="_blank" class="jira-link">DEV-1539</a></td><td style="text-align:left">Gesti&#243;n de conceptos de caja</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1540" target="_blank" class="jira-link">DEV-1540</a></td><td style="text-align:left">Veh&#237;culos - Ampliar gesti&#243;n de carrocer&#237;as</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1541" target="_blank" class="jira-link">DEV-1541</a></td><td style="text-align:left">Esquemas tarifarios - Aplicar nuevas mejoras</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1542" target="_blank" class="jira-link">DEV-1542</a></td><td style="text-align:left">Gesti&#243;n de terminales y puntos de pick-up</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+        <li class="step-item">
+          <div style="display:flex;align-items:center;gap:16px;width:100%">
+            <div class="step-icon">3</div>
+            <div class="step-body">
+              <div class="step-title">Sisorg - Pools</div>
+              <div class="step-meta">1 ticket &middot; 0 Done &middot; 0 In Progress &middot; 1 To Do</div>
+            </div>
+            <span class="chip chip-analisis" style="align-self:center">EN AN&#193;LISIS</span>
+            <span class="static-date" style="border-color:hsl(270,60%,40%);color:hsl(270,60%,40%);background:hsla(270,60%,55%,0.15)">&#8212;</span>
+            <span class="jira-toggle" onclick="toggleJira(this)">Ver tickets &#9660;</span>
+          </div>
+          <div class="jira-list hidden" style="width:100%;margin-top:12px;">
+            <table class="jira-table">
+              <thead><tr><th style="text-align:left">Ticket</th><th style="text-align:left">Descripci&#243;n</th><th>Tipo</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1447" target="_blank" class="jira-link">DEV-1447</a></td><td style="text-align:left">Integraci&#243;n Comercial entre TMS</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+        <li class="step-item">
+          <div style="display:flex;align-items:center;gap:16px;width:100%">
+            <div class="step-icon">4</div>
+            <div class="step-body">
+              <div class="step-title">Kill FICS</div>
+              <div class="step-meta">En an&#225;lisis</div>
+            </div>
+            <span class="chip chip-analisis" style="align-self:center">EN AN&#193;LISIS</span>
+            <span class="static-date" style="border-color:hsl(270,60%,40%);color:hsl(270,60%,40%);background:hsla(270,60%,55%,0.15)">&#8212;</span>
+            <span class="jira-toggle" onclick="toggleJira(this)">Ver tickets &#9660;</span>
+          </div>
+          <div class="jira-list hidden" style="width:100%;margin-top:12px;">
+            <table class="jira-table">
+              <thead><tr><th style="text-align:left">Ticket</th><th style="text-align:left">Descripci&#243;n</th><th>Tipo</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td colspan="4" style="text-align:center;color:var(--sis-ink-mute);padding:20px;">Sin tickets asignados</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <!-- ESTABILIZACION -->
+  <div class="table-wrapper" id="wrapperEstab">
+    <div class="table-collapse-header" onclick="toggleWrapper('wrapperEstab')"><h3>Estabilizaci&#243;n</h3></div>
+    <div class="table-collapsible" style="background:var(--sis-bg);border:1px solid var(--sis-border);border-top:none;border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:var(--shadow-sm);padding:24px 28px;">
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:16px;">
+        <li class="step-item" style="flex-direction:column">
+          <div style="display:flex;align-items:center;gap:16px;width:100%">
+            <div class="step-icon">1</div>
+            <div class="step-body">
+              <div class="step-title">Miscellaneous - Sprint 26.10</div>
+              <div class="step-meta">42 tickets &middot; 27 Done &middot; 3 In Progress &middot; 10 To Do</div>
+            </div>
+            <span class="chip chip-programado" style="align-self:center">EN PROCESO</span>
+            <div class="step-progress" style="min-width:120px"><div class="step-bar"><div class="step-fill" style="width:64%;background:hsl(210,80%,55%)"></div></div><span class="step-pct" style="color:hsl(210,80%,40%)">64%</span></div>
+            <span class="static-date" style="border-color:hsl(210,80%,40%);color:hsl(210,80%,40%);background:hsla(210,80%,55%,0.15)">&#8212;</span>
+            <span class="jira-toggle" onclick="toggleJira(this)">Ver tickets (42) &#9660;</span>
+          </div>
+          <div class="jira-list hidden" style="width:100%;margin-top:12px;">
+            <table class="jira-table">
+              <thead><tr><th style="text-align:left">Ticket</th><th style="text-align:left">Descripci&#243;n</th><th>Tipo</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1362" target="_blank" class="jira-link">DEV-1362</a></td><td style="text-align:left">Microseguro no toma el concepto de caja por configuraci&#243;n</td><td>Bug</td><td><span class="chip chip-reprogramado">IN PROGRESS</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1395" target="_blank" class="jira-link">DEV-1395</a></td><td style="text-align:left">Se rompi&#243; venta serv auxil POS venta de TK</td><td>Bug</td><td><span class="chip chip-reprogramado">IN PROGRESS</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1438" target="_blank" class="jira-link">DEV-1438</a></td><td style="text-align:left">Error descuento variable I/V (feedback El Pr&#225;ctico)</td><td>Story</td><td><span class="chip chip-reprogramado">IN PROGRESS</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1149" target="_blank" class="jira-link">DEV-1149</a></td><td style="text-align:left">Administrador de perfiles y asignaci&#243;n a usuario/empresa en LEAN</td><td>Task</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1246" target="_blank" class="jira-link">DEV-1246</a></td><td style="text-align:left">Role enforcement gaps remaining in POS / Trips components</td><td>Bug</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1437" target="_blank" class="jira-link">DEV-1437</a></td><td style="text-align:left">C&#243;digo de terminal + foco (feedback El Pr&#225;ctico)</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1439" target="_blank" class="jira-link">DEV-1439</a></td><td style="text-align:left">Arrastrar selecci&#243;n de m&#233;todo de pago</td><td>Story</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1467" target="_blank" class="jira-link">DEV-1467</a></td><td style="text-align:left">Planta completa saltea rengl&#243;n</td><td>Bug</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1477" target="_blank" class="jira-link">DEV-1477</a></td><td style="text-align:left">Leyenda confusa al anular un pasaje</td><td>Task</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1493" target="_blank" class="jira-link">DEV-1493</a></td><td style="text-align:left">No actualiza el saldo de caja en home</td><td>Bug</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1516" target="_blank" class="jira-link">DEV-1516</a></td><td style="text-align:left">Geoposicionar terminales v&#237;a coordenadas y otros</td><td>Task</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-774" target="_blank" class="jira-link">DEV-774</a></td><td style="text-align:left">POS - Seguro menor en ida y vuelta</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1147" target="_blank" class="jira-link">DEV-1147</a></td><td style="text-align:left">Estructuraci&#243;n de roles y perfiles en LEAN</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1150" target="_blank" class="jira-link">DEV-1150</a></td><td style="text-align:left">Enforcement de roles LEAN en componentes con appRolePermission</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1268" target="_blank" class="jira-link">DEV-1268</a></td><td style="text-align:left">Reimpresi&#243;n de ticket: rol para habilitar/deshabilitar</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1320" target="_blank" class="jira-link">DEV-1320</a></td><td style="text-align:left">Rutas - Implementar Open Window</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1323" target="_blank" class="jira-link">DEV-1323</a></td><td style="text-align:left">Ajuste alta de servicio por intervalos</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1337" target="_blank" class="jira-link">DEV-1337</a></td><td style="text-align:left">Reservas - Conversi&#243;n a venta rompe al agregar butaca</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1345" target="_blank" class="jira-link">DEV-1345</a></td><td style="text-align:left">Operaciones de ticket - Modificar fecha y fechar abierto</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1347" target="_blank" class="jira-link">DEV-1347</a></td><td style="text-align:left">Perfiles - No se actualizan correctamente en el usuario</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1364" target="_blank" class="jira-link">DEV-1364</a></td><td style="text-align:left">No deja anular pasaje resultante de un canje</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1365" target="_blank" class="jira-link">DEV-1365</a></td><td style="text-align:left">Error al cambiar fecha</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1366" target="_blank" class="jira-link">DEV-1366</a></td><td style="text-align:left">Gesti&#243;n de ticket no informa bien los valores</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1370" target="_blank" class="jira-link">DEV-1370</a></td><td style="text-align:left">Routes - Add CUT OFF field with HTP cascade</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1391" target="_blank" class="jira-link">DEV-1391</a></td><td style="text-align:left">Error filtro tipo de TK por categor&#237;a</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1392" target="_blank" class="jira-link">DEV-1392</a></td><td style="text-align:left">Venta ida y vuelta con seguro de menor ajuste</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1393" target="_blank" class="jira-link">DEV-1393</a></td><td style="text-align:left">Gesti&#243;n de viajes agregar filtro por empresa transportadora</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1396" target="_blank" class="jira-link">DEV-1396</a></td><td style="text-align:left">Agregar nuevos roles y ajustar nombres</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1397" target="_blank" class="jira-link">DEV-1397</a></td><td style="text-align:left">Roles que no est&#225;n aplicando</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1398" target="_blank" class="jira-link">DEV-1398</a></td><td style="text-align:left">Pagar con ticket - Ajustes</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1406" target="_blank" class="jira-link">DEV-1406</a></td><td style="text-align:left">FICS API - Listado de pasajeros</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1427" target="_blank" class="jira-link">DEV-1427</a></td><td style="text-align:left">POS - No se muestra la columna de interno</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1433" target="_blank" class="jira-link">DEV-1433</a></td><td style="text-align:left">Fix: /v2/User/permissions returns roles from Perfiles</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1435" target="_blank" class="jira-link">DEV-1435</a></td><td style="text-align:left">No activa scroll</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1443" target="_blank" class="jira-link">DEV-1443</a></td><td style="text-align:left">Gesti&#243;n de Viajes - Fix columna Veh&#237;culo "No enturnado"</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1459" target="_blank" class="jira-link">DEV-1459</a></td><td style="text-align:left">Planilla de viaje no muestra observaciones</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1471" target="_blank" class="jira-link">DEV-1471</a></td><td style="text-align:left">API para saber las ventas en LEAN y otros</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1478" target="_blank" class="jira-link">DEV-1478</a></td><td style="text-align:left">Error al vender seguro de menor</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1479" target="_blank" class="jira-link">DEV-1479</a></td><td style="text-align:left">Error al filtrar tipo de TK por tramo</td><td>Bug</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1490" target="_blank" class="jira-link">DEV-1490</a></td><td style="text-align:left">Seguro de menor en ticket de mayor</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1546" target="_blank" class="jira-link">DEV-1546</a></td><td style="text-align:left">Gesti&#243;n de ticket - Ajustes</td><td>Bug</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1547" target="_blank" class="jira-link">DEV-1547</a></td><td style="text-align:left">Abordaje no muestra el tramo del ticket</td><td>Bug</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li class="step-item" style="flex-direction:column">
+          <div style="display:flex;align-items:center;gap:16px;width:100%">
+            <div class="step-icon">2</div>
+            <div class="step-body">
+              <div class="step-title">Performance</div>
+              <div class="step-meta">6 tickets &middot; 3 Done &middot; 0 In Progress &middot; 3 To Do</div>
+            </div>
+            <span class="chip chip-programado" style="align-self:center">EN PROCESO</span>
+            <div class="step-progress" style="min-width:120px"><div class="step-bar"><div class="step-fill" style="width:50%;background:hsl(210,80%,55%)"></div></div><span class="step-pct" style="color:hsl(210,80%,40%)">50%</span></div>
+            <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:hsl(210,80%,40%)">—</span>
+            <span class="jira-toggle" onclick="toggleJira(this)">Ver tickets (6) &#9660;</span>
+          </div>
+          <div class="jira-list hidden" style="width:100%;margin-top:12px;">
+            <table class="jira-table">
+              <thead><tr><th style="text-align:left">Ticket</th><th style="text-align:left">Descripci&#243;n</th><th>Tipo</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1283" target="_blank" class="jira-link">DEV-1283</a></td><td style="text-align:left">Fase 2: Refactors estructurales del flujo de venta</td><td>Task</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1389" target="_blank" class="jira-link">DEV-1389</a></td><td style="text-align:left">Feature-parity flujo de venta V2 vs V1</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1390" target="_blank" class="jira-link">DEV-1390</a></td><td style="text-align:left">Feature-parity GetAvailable V2 vs V1</td><td>Story</td><td><span class="chip chip-prod">DONE</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1371" target="_blank" class="jira-link">DEV-1371</a></td><td style="text-align:left">Caching de reference data (HybridCache)</td><td>Task</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1372" target="_blank" class="jira-link">DEV-1372</a></td><td style="text-align:left">Eliminar re-reads post-SP en ChangeTicketDate / ExchangeTicket</td><td>Task</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+                <tr><td style="text-align:left"><a href="https://sisorgcloud.atlassian.net/browse/DEV-1373" target="_blank" class="jira-link">DEV-1373</a></td><td style="text-align:left">Batch de sub-queries en GetFareForTicket</td><td>Task</td><td><span class="chip chip-programado">TO DO</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    SISORG &middot; NEW TMS NEGOCIOS &middot; Reporte est&#225;tico generado el 08/06/2026
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    function toggleWrapper(id) { document.getElementById(id).classList.toggle('collapsed'); }
+    function toggleNextSteps(id) { document.getElementById(id).classList.toggle('collapsed'); }
+    function toggleJira(btn) {
+      var item = btn.closest('.step-item') || btn.closest('li');
+      if (!item) return;
+      var list = item.querySelector('.jira-list');
+      if (list) list.classList.toggle('hidden');
+    }
+
+    Chart.defaults.font.family = '"Inter", system-ui, sans-serif';
+    Chart.defaults.color = '#6B7280';
+
+    var lineLabels = ["2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-23","2026-04-24","2026-04-25","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-02","2026-05-03","2026-05-06","2026-05-07","2026-05-14","2026-05-15","2026-05-16","2026-05-17","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-23","2026-05-24","2026-05-25","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-05-30","2026-05-31","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-06","2026-06-07","2026-06-08"];
+    var lineData = [17,8,22,12,8,17,18,16,27,11,18,4,9,6,10,7,7,1,9,33,5,15,2,5,2,2,10,21,1,2,10,25,34,23,18,14,9,11,18,14,10,18,10,8,26,92,10,16,4,8,3,5];
+    var barLabels = ["Vallecito","El Chaltén","Coop. Sportman","El Práctico","Caltur","La 20 de Junio","Grupo ERSA (Singer)"];
+    var barData = [280,235,104,55,17,9,4];
+
+    new Chart(document.getElementById('chartLine'), {
+      type: 'line',
+      data: {
+        labels: lineLabels,
+        datasets: [{ label: 'Tickets', data: lineData, borderColor: '#157448', backgroundColor: 'rgba(21,116,72,0.08)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: '#157448', borderWidth: 2 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { font: { family: '"Poppins"', size: 10 }, maxTicksLimit: 15 }, grid: { color: '#E3E5E9', lineWidth: 0.5 } },
+          y: { ticks: { font: { family: '"Poppins"', size: 10 } }, grid: { color: '#E3E5E9', lineWidth: 0.5 }, beginAtZero: true }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('chartClients'), {
+      type: 'bar',
+      data: {
+        labels: barLabels,
+        datasets: [{ label: 'Tickets', data: barData, backgroundColor: '#157448', borderRadius: { topLeft: 0, topRight: 4, bottomLeft: 0, bottomRight: 4 } }]
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { font: { family: '"Poppins"', size: 10 } }, grid: { color: '#E3E5E9', lineWidth: 0.5 }, beginAtZero: true },
+          y: { ticks: { font: { family: '"Inter"', size: 13, weight: 600 }, color: '#29303D' }, grid: { display: false } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
