@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RM · Tablero de Status — SISORG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sis-primary:hsl(152 69% 27%);--sis-primary-dark:hsl(152 69% 22%);--sis-primary-mid:hsl(152 69% 32%);
+  --sis-primary-soft:hsl(152 50% 75%);--sis-primary-wash:hsl(152 60% 96%);--sis-deep:hsl(152 64% 11%);
+  --sis-accent:hsl(24 85% 60%);--sis-accent-light:hsl(24 90% 75%);--sis-accent-wash:hsl(24 85% 96%);
+  --sis-bg:#FFFFFF;--sis-bg-muted:hsl(220 14% 96%);--sis-bg-soft:hsl(220 14% 98%);
+  --sis-border:hsl(220 13% 91%);--sis-border-strong:hsl(220 13% 84%);
+  --sis-ink:hsl(220 20% 20%);--sis-ink-soft:hsl(220 10% 46%);--sis-ink-mute:hsl(220 10% 60%);
+  --sis-destructive:hsl(0 84% 60%);--sis-destructive-wash:hsl(0 84% 97%);
+  --amber:#E0A82E;--amber-wash:#FBF3E0;
+  --gradient-deep:linear-gradient(135deg,hsl(152 64% 11%) 0%,hsl(152 69% 22%) 100%);
+  --radius:.5rem;--radius-lg:.75rem;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(10,45,25,.05),0 2px 8px rgba(10,45,25,.04);
+  --shadow-md:0 2px 6px rgba(10,45,25,.06),0 12px 32px rgba(10,45,25,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Inter",system-ui,sans-serif;color:var(--sis-ink);background:var(--sis-bg-muted);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Sora",sans-serif;margin:0}
+.eyebrow{font-family:"Poppins",sans-serif;font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.sheet{max-width:1080px;margin:28px auto;background:#fff;box-shadow:var(--shadow-md);border-radius:14px;overflow:hidden}
+/* ---- header band ---- */
+.band{background:var(--gradient-deep);color:#fff;padding:30px 44px 40px;position:relative;overflow:hidden}
+.band::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.06) 1px,transparent 0);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent);mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent)}
+.band>*{position:relative;z-index:1}
+.toprow{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:9px;font-family:"Sora";font-weight:600;font-size:18px;letter-spacing:-.01em}
+.logo .mark{color:var(--sis-accent);display:grid;place-items:center}
+.toprow .eyebrow{color:rgba(255,255,255,.6)}
+.band h1{font-weight:400;font-size:34px;letter-spacing:-.02em;margin-top:26px}
+.band .subrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{font-family:"Poppins";font-weight:500;font-size:11px;letter-spacing:.04em;padding:5px 13px;border-radius:var(--radius-pill);background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);color:#fff}
+/* ---- summary card overlap ---- */
+.body{padding:0 44px 40px}
+.summary{background:#fff;border:1px solid var(--sis-border);border-left:4px solid var(--sis-destructive);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:24px 28px;margin-top:20px;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.rag{display:flex;flex-direction:column;align-items:center;gap:8px;padding-right:26px;border-right:1px solid var(--sis-border);min-width:128px}
+.rag .dot{width:46px;height:46px;border-radius:50%;background:var(--sis-destructive);box-shadow:0 0 0 7px var(--sis-destructive-wash)}
+.rag .st{font-family:"Poppins";font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--sis-destructive)}
+.rag .lbl{font-family:"Poppins";font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sis-ink-mute)}
+.summary .txt h3{font-size:14px;color:var(--sis-deep);margin-bottom:7px}
+.summary .txt p{margin:0;font-size:14.5px;line-height:1.6;color:var(--sis-ink)}
+.summary .txt p b{color:var(--sis-deep);font-weight:600}
+/* ---- section ---- */
+section{margin-top:34px}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.shead .eyebrow{color:var(--sis-accent)}
+.shead h2{font-weight:400;font-size:21px;letter-spacing:-.012em;color:var(--sis-deep)}
+.shead .ln{flex:1;height:1px;background:var(--sis-border)}
+/* ---- strategic band ---- */
+.strat{background:var(--gradient-deep);color:#fff;border-radius:var(--radius-lg);padding:22px 26px;position:relative;overflow:hidden}
+.strat::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 60% 120% at 90% 0%,#000,transparent);mask-image:radial-gradient(ellipse 60% 120% at 90% 0%,#000,transparent)}
+.strat>*{position:relative;z-index:1}
+.strat .se{font-family:"Poppins";font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--sis-primary-soft)}
+.strat .stt{font-family:"Sora";font-weight:400;font-size:18px;line-height:1.4;margin-top:9px;color:#fff;letter-spacing:-.01em}
+.strat .sb{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.82);margin-top:11px;max-width:90%}
+/* ---- OKR cards ---- */
+.okr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.okr{background:#fff;border:1px solid var(--sis-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:20px 22px;position:relative}
+.okr.k1{border-top:3px solid var(--amber)}
+.okr.k2{border-top:3px solid var(--sis-destructive)}
+.okr .onum{font-family:"Sora";font-weight:600;font-size:11px;letter-spacing:.1em;color:var(--sis-accent);text-transform:uppercase}
+.okr .otxt{font-size:14.5px;line-height:1.45;color:var(--sis-deep);font-weight:600;margin:9px 0 16px}
+.okr .ofrac{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.okr .ofrac .big{font-family:"Sora";font-weight:400;font-size:30px;color:var(--sis-deep);line-height:1}
+.okr .ofrac .of-lbl{font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sis-ink-soft)}
+.okr .obar{height:7px;border-radius:var(--radius-pill);background:var(--sis-bg-muted);overflow:hidden}
+.okr .obar>span{display:block;height:100%;border-radius:var(--radius-pill);background:var(--sis-primary)}
+.okr .ostat{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-family:"Poppins";font-size:10.5px;letter-spacing:.04em;color:var(--sis-ink-soft)}
+.okr .ostat b{font-family:"Poppins";font-weight:600;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-pill)}
+.okr .ostat b.s-prog{background:var(--amber-wash);color:var(--amber)}
+.okr .ostat b.s-risk{background:var(--sis-destructive-wash);color:var(--sis-destructive)}
+.okr .odetail{font-size:12px;line-height:1.55;color:var(--sis-ink-soft);margin-top:12px}
+.okr .oconf{display:inline-flex;align-items:center;gap:6px;margin-top:13px;font-family:"Poppins";font-weight:600;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:var(--radius-pill)}
+.oconf.med{background:var(--amber-wash);color:var(--amber)}
+.oconf.tbd{background:var(--sis-bg-muted);color:var(--sis-ink-soft)}
+.oconf .cd{width:7px;height:7px;border-radius:50%;background:currentColor}
+.prospects{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.prospect{font-family:"Poppins";font-weight:500;font-size:10.5px;letter-spacing:.02em;padding:5px 11px;border-radius:var(--radius-pill);background:var(--sis-bg-muted);color:var(--sis-ink);border:1px dashed var(--sis-border-strong)}
+/* ---- metrics strip ---- */
+.mstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.metric{text-align:center;padding:16px 12px;background:var(--sis-bg-soft);border:1px solid var(--sis-border);border-radius:var(--radius-lg);border-top:3px solid var(--sis-primary)}
+.metric.warn{border-top-color:var(--amber)}
+.metric.risk{border-top-color:var(--sis-destructive)}
+.metric .v{font-family:"Sora";font-weight:400;font-size:30px;color:var(--sis-deep);line-height:1}
+.metric .v small{font-size:14px;color:var(--sis-ink-mute)}
+.metric .k{font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sis-ink-soft);margin-top:9px;line-height:1.3}
+/* ---- two col (risk + ask) ---- */
+.cols{display:grid;grid-template-columns:1.25fr 1fr;gap:22px}
+.box{background:#fff;border:1px solid var(--sis-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:20px 22px}
+.box h3{font-weight:600;font-size:14px;color:var(--sis-deep);margin-bottom:14px}
+table{width:100%;border-collapse:collapse}
+thead th{font-family:"Poppins";font-weight:500;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--sis-ink-soft);text-align:left;padding:0 8px 9px}
+tbody td{font-size:13px;padding:11px 8px;border-top:1px solid var(--sis-border);vertical-align:top;line-height:1.45}
+.rk-name{font-weight:600;color:var(--sis-deep);display:block;margin-bottom:3px}
+.rk-desc{color:var(--sis-ink-soft);font-size:12px;line-height:1.5}
+.sev{display:inline-block;font-family:"Poppins";font-weight:600;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-pill);white-space:nowrap}
+.sev-h{background:var(--sis-destructive-wash);color:var(--sis-destructive)}
+.sev-m{background:var(--amber-wash);color:var(--amber)}
+.owner{font-family:"Poppins";font-size:11px;color:var(--sis-ink-soft);white-space:nowrap}
+.dec{border:1px solid var(--sis-border);border-left:3px solid var(--sis-accent);border-radius:var(--radius);padding:14px 16px}
+.dec .q{font-size:13.5px;font-weight:600;color:var(--sis-deep);line-height:1.45}
+.dec .meta{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+.chip{display:inline-block;font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.05em;padding:3px 10px;border-radius:var(--radius-pill);text-transform:uppercase}
+.chip.own{background:var(--sis-primary-wash);color:var(--sis-primary)}
+.chip.due{background:var(--sis-bg-muted);color:var(--sis-ink-soft)}
+/* ---- timeline (roadmap) ---- */
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.tnode{position:relative;padding:0 14px}
+.tnode::before{content:"";position:absolute;top:9px;left:0;right:0;height:3px;background:var(--sis-border)}
+.tnode:first-child::before{left:50%}.tnode:last-child::before{right:50%}
+.tnode .knob{position:relative;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--sis-border-strong);margin:0 auto 14px;z-index:1}
+.tnode.done .knob{border-color:var(--sis-primary);background:var(--sis-primary)}
+.tnode.done::before{background:var(--sis-primary)}
+.tnode.dev .knob{border-color:var(--sis-accent);background:var(--sis-accent)}
+.tnode.dev::after{content:"";position:absolute;top:9px;left:0;width:50%;height:3px;background:var(--sis-primary)}
+.tnode .rcard{background:#fff;border:1px solid var(--sis-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:15px 16px;text-align:left}
+.tnode.dev .rcard{border-color:var(--sis-accent-light)}
+.tnode .rn{font-family:"Poppins";font-weight:600;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--sis-ink-soft)}
+.tnode .rt{font-family:"Sora";font-weight:600;font-size:15px;color:var(--sis-deep);margin:4px 0 2px}
+.tnode .rd{font-size:12px;line-height:1.45;color:var(--sis-ink-soft);margin-top:9px}
+.tnode .tag{display:inline-block;font-family:"Poppins";font-weight:500;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-pill);margin-top:11px}
+.tg-done{background:var(--sis-primary-wash);color:var(--sis-primary)}
+.tg-dev{background:var(--sis-accent-wash);color:var(--sis-accent)}
+.tg-next{background:var(--sis-bg-muted);color:var(--sis-ink-soft)}
+.backlog-box{margin-top:18px;padding:15px 18px;background:var(--sis-bg-soft);border:1px solid var(--sis-border);border-radius:var(--radius)}
+.bl-lbl{font-family:"Poppins";font-weight:600;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sis-deep);margin-bottom:11px}
+.bl-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+.bl-list li{position:relative;padding-left:15px;font-size:13px;line-height:1.4;color:var(--sis-ink-soft)}
+.bl-list li::before{content:"";position:absolute;left:2px;top:6px;width:5px;height:5px;border-radius:50%;background:var(--sis-accent)}
+/* ---- milestones ---- */
+.ms-list{display:flex;flex-direction:column}
+.ms{display:flex;gap:16px;align-items:flex-start;padding:15px 0;border-top:1px solid var(--sis-border)}
+.ms:first-child{border-top:none}
+.ms .mdate{flex-shrink:0;width:74px;text-align:center;background:var(--sis-bg-soft);border:1px solid var(--sis-border);border-radius:var(--radius);padding:8px 4px}
+.ms.next .mdate{background:var(--sis-accent);border-color:var(--sis-accent)}
+.ms.next .mdate .dd,.ms.next .mdate .mm{color:#fff}
+.ms.crit .mdate{background:var(--sis-destructive);border-color:var(--sis-destructive)}
+.ms.crit .mdate .dd,.ms.crit .mdate .mm{color:#fff}
+.ms .mdate .dd{font-family:"Sora";font-weight:600;font-size:19px;color:var(--sis-deep);line-height:1}
+.ms .mdate .mm{font-family:"Poppins";font-weight:500;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--sis-ink-soft);margin-top:3px}
+.ms .mbody{flex:1;padding-top:1px}
+.ms .mt{font-family:"Sora";font-weight:600;font-size:14.5px;color:var(--sis-deep)}
+.ms .md{font-size:12.5px;line-height:1.5;color:var(--sis-ink-soft);margin-top:3px}
+.ms .mtag{display:inline-block;font-family:"Poppins";font-weight:500;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-pill);margin-top:8px}
+.mt-next{background:var(--sis-accent-wash);color:var(--sis-accent)}
+.mt-prog{background:var(--sis-primary-wash);color:var(--sis-primary)}
+.mt-plan{background:var(--sis-bg-muted);color:var(--sis-ink-soft)}
+.mt-crit{background:var(--sis-destructive-wash);color:var(--sis-destructive)}
+/* ---- commitments ---- */
+.commit{display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-top:1px solid var(--sis-border)}
+.commit:first-child{border-top:none}
+.commit .cbox{flex-shrink:0;width:18px;height:18px;border-radius:5px;border:2px solid var(--sis-primary-soft);margin-top:1px}
+.commit .cwho{font-family:"Poppins";font-weight:600;font-size:11px;color:var(--sis-primary);min-width:104px;letter-spacing:.02em;padding-top:1px}
+.commit .cwhat{flex:1;font-size:13.5px;line-height:1.45;color:var(--sis-ink)}
+.cokr{flex-shrink:0;font-family:"Poppins";font-weight:600;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);white-space:nowrap;margin-top:1px}
+.cokr.k1{background:var(--amber-wash);color:var(--amber)}
+.cokr.k2{background:var(--sis-destructive-wash);color:var(--sis-destructive)}
+.cokr.ke{background:var(--sis-bg-muted);color:var(--sis-ink-soft)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px dashed var(--sis-border)}
+.legend span{font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.04em;color:var(--sis-ink-soft);display:flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+footer{padding:22px 44px 34px;color:var(--sis-ink-mute);font-size:11px;border-top:1px solid var(--sis-border);margin-top:34px;line-height:1.6}
+footer b{color:var(--sis-ink-soft);font-weight:600}
+/* ---- lang toggle ---- */
+.langtoggle{display:inline-flex;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:var(--radius-pill);padding:3px;gap:2px}
+.langtoggle button{font-family:"Poppins";font-weight:600;font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.7);background:transparent;border:none;border-radius:var(--radius-pill);padding:5px 13px;cursor:pointer;transition:all .15s}
+.langtoggle button.on{background:#fff;color:var(--sis-deep)}
+.langtoggle button:not(.on):hover{color:#fff}
+@media print{body{background:#fff}.sheet{box-shadow:none;margin:0;max-width:100%}.langtoggle{display:none}}
+@media(max-width:880px){
+  .body{padding:0 24px 30px}.band{padding:26px 24px 30px}
+  .okr-grid{grid-template-columns:1fr}
+  .mstrip{grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr 1fr;gap:18px}.tnode::before,.tnode::after{display:none}
+  .cols{grid-template-columns:1fr}
+  .bl-list{grid-template-columns:1fr}
+  .summary{grid-template-columns:1fr;gap:18px}
+  .rag{flex-direction:row;border-right:none;border-bottom:1px solid var(--sis-border);padding:0 0 16px;min-width:0;justify-content:flex-start;gap:14px}
+  .commit .cwho{min-width:84px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="band">
+    <div class="toprow">
+      <div class="logo"><span class="mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 8.5c0-1.7 1.4-3 3.2-3h6.3M17 15.5c0 1.7-1.4 3-3.2 3H7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="6.5" cy="8.5" r="2.3" fill="currentColor"/><circle cx="17.5" cy="15.5" r="2.3" fill="currentColor"/></svg></span>SISORG</div>
+      <div class="langtoggle" role="group" aria-label="Language">
+        <button id="btn-es" class="on" onclick="setLang('es')">ES</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+    <div class="eyebrow" data-k="hdr_product_line" style="color:var(--sis-primary-soft);margin-top:24px">Revenue Management</div>
+    <h1 data-k="h1">Tablero de status — RM</h1>
+    <div class="subrow">
+      <span class="pill" data-k="pill_date">Corte 29/05/2026</span>
+      <span class="pill" data-k="pill_pod">POD: Germán · Román</span>
+      <span class="pill" data-k="pill_q">Q2 2026 · ~4 semanas restantes</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- RESUMEN EJECUTIVO -->
+    <div class="summary">
+      <div class="rag">
+        <div class="dot"></div>
+        <div class="st" data-k="rag_state">En riesgo</div>
+        <div class="lbl" data-k="rag_state_lbl">Estado general</div>
+      </div>
+      <div class="txt">
+        <h3 data-k="sum_h3">Resumen ejecutivo</h3>
+        <p data-k="sum_p">El producto avanza con buen ritmo: release a producción el 9/6 y <b>1 de 3 clientes en uso activo</b> (La20). El desafío del quarter está en la <b>prueba comercial</b>: con ese 1 de 3 todavía no logramos el engagement necesario para que los clientes apliquen recetas y declaren resultados, que es el paso que habilita documentar el impacto en $$. El foco ahora es destrabar esa adopción para convertir el avance de producto en un caso comercial.</p>
+      </div>
+    </div>
+
+    <!-- ENCUADRE ESTRATÉGICO -->
+    <section>
+      <div class="strat">
+        <div class="se" data-k="strat_eyebrow">Por qué importa</div>
+        <div class="stt" data-k="strat_title">Revenue Management es la apuesta estratégica de SISORG para 2026: el motor de diferenciación y de captación de nuevos clientes.</div>
+        <div class="sb" data-k="strat_body">Q2 es el quarter para convertir la capacidad de producto en adopción que paga y en una prueba comercial clara. El éxito del quarter se mide por los dos compromisos de abajo.</div>
+      </div>
+    </section>
+
+    <!-- COMPROMISOS DEL Q2 (OKRs) -->
+    <section>
+      <div class="shead"><span class="eyebrow" data-k="sec_okr_eyebrow">Compromisos del quarter</span><h2 data-k="sec_okr_h2">Los 2 compromisos del Q2</h2><span class="ln"></span></div>
+      <div class="okr-grid">
+
+        <div class="okr k1">
+          <div class="onum" data-k="okr1_num">Compromiso 1</div>
+          <div class="otxt" data-k="okr1_t">Release desplegado y en uso activo por al menos 3 clientes enterprise.</div>
+          <div class="ofrac"><span class="big" data-k="okr1_frac">1 / 3</span><span class="of-lbl" data-k="okr1_frac_lbl">clientes en uso activo</span></div>
+          <div class="obar"><span style="width:33%;background:var(--amber)"></span></div>
+          <div class="ostat"><span data-k="okr1_bar_lbl">Avance hacia la meta</span><b class="s-prog" data-k="okr1_st">En curso</b></div>
+          <div class="odetail" data-k="okr1_detail">La20 ya en uso activo. Apuestas a mejorar el engagement:</div>
+          <div class="prospects">
+            <span class="prospect" data-k="okr1_p1">Del Sur y Media Agua</span>
+            <span class="prospect" data-k="okr1_p2">Puerto Tirol</span>
+          </div>
+          <div class="oconf med"><span class="cd"></span><span data-k="okr1_conf">Confianza: media</span></div>
+        </div>
+
+        <div class="okr k2">
+          <div class="onum" data-k="okr2_num">Compromiso 2</div>
+          <div class="otxt" data-k="okr2_t">Mejora medible de revenue-per-km o margen en al menos 3 clientes, con impacto en $$ documentado. Empaquetar y vender la narrativa.</div>
+          <div class="ofrac"><span class="big" data-k="okr2_frac">0 / 3</span><span class="of-lbl" data-k="okr2_frac_lbl">clientes con $$ documentado</span></div>
+          <div class="obar"><span style="width:5%;background:var(--sis-destructive)"></span></div>
+          <div class="ostat"><span data-k="okr2_bar_lbl">Avance hacia la meta</span><b class="s-risk" data-k="okr2_st">En riesgo</b></div>
+          <div class="odetail" data-k="okr2_detail">Nada medido todavía. Bloqueo: que los clientes apliquen recetas y declaren resultados. Hito que lo define: el primer caso medido y documentado.</div>
+          <div class="oconf tbd"><span class="cd"></span><span data-k="okr2_conf">Confianza: por determinar</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MÉTRICAS CLAVE -->
+    <section>
+      <div class="shead"><span class="eyebrow" data-k="sec_met_eyebrow">Métricas clave</span><h2 data-k="sec_met_h2">Dónde estamos hoy</h2><span class="ln"></span></div>
+      <div class="mstrip">
+        <div class="metric warn"><div class="v">1<small> / 3</small></div><div class="k" data-k="m1_k">Clientes en uso activo</div></div>
+        <div class="metric risk"><div class="v">0<small> / 3</small></div><div class="k" data-k="m2_k">Clientes con impacto $$ documentado</div></div>
+        <div class="metric"><div class="v">9<small> Jun</small></div><div class="k" data-k="m3_k">Deploy a producción</div></div>
+        <div class="metric warn"><div class="v">~4<small> sem</small></div><div class="k" data-k="m4_k">Semanas restantes de Q2</div></div>
+      </div>
+    </section>
+
+    <!-- RIESGO + PEDIDO -->
+    <section>
+      <div class="shead"><span class="eyebrow" data-k="sec_rk_eyebrow">Riesgo y mitigaciones</span><h2 data-k="sec_rk_h2">Qué frena el quarter y qué necesito</h2><span class="ln"></span></div>
+      <div class="cols">
+        <div class="box">
+          <h3 data-k="rk_box_h3">Riesgo principal</h3>
+          <table>
+            <thead><tr><th data-k="th_risk">Riesgo</th><th data-k="th_sev">Sev.</th><th data-k="th_owner">Owner</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="rk-name" data-k="r1_name">Adopción y feedback de clientes</span><span class="rk-desc" data-k="r1_desc">Sin que los clientes apliquen recetas y declaren resultados, no hay números de impacto. Bloquea directamente el Compromiso 2.</span></td>
+                <td><span class="sev sev-h" data-k="r1_sev">Alta</span></td>
+                <td><span class="owner" data-k="r1_owner">POD · Comercial</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="box">
+          <h3 data-k="ask_box_h3">Mitigaciones</h3>
+          <div class="dec">
+            <div class="q" data-k="dec1_q">Que Comercial/CSM empuje activamente a los clientes —empezando por La20— a aplicar recetas y declarar resultados.</div>
+            <div class="meta"><span class="chip own" data-k="dec1_own">Comercial / Mgmt</span><span class="chip due" data-k="dec1_due">Junio</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP DE RELEASES -->
+    <section>
+      <div class="shead"><span class="eyebrow" data-k="sec2_eyebrow">Roadmap</span><h2 data-k="sec2_h2">Roadmap de releases</h2><span class="ln"></span></div>
+      <div class="timeline">
+        <div class="tnode done"><div class="knob"></div><div class="rcard"><div class="rn" data-k="r2_rn">Release 2 · DEV-1025</div><div class="rt" data-k="r2_rt">Performance escalable</div><div class="rd" data-k="r2_rd">Prueba de performance y base para predicción.</div><span class="tag tg-done" data-k="r2_tag">Finalizado</span></div></div>
+        <div class="tnode done"><div class="knob"></div><div class="rcard"><div class="rn" data-k="r3_rn">Release 3 · DEV-1064</div><div class="rt" data-k="r3_rt">Optimización de mensajes</div><div class="rd" data-k="r3_rd">Medir el uso y la usabilidad de la herramienta.</div><span class="tag tg-done" data-k="r3_tag">Finalizado</span></div></div>
+        <div class="tnode dev"><div class="knob"></div><div class="rcard"><div class="rn" data-k="r4_rn">Release 4 · DEV-1074</div><div class="rt" data-k="r4_rt">Scoring de oportunidades</div><div class="rd" data-k="r4_rd">Curva histórica con recetas aplicadas; valor por oportunidad.</div><span class="tag tg-dev" data-k="r4_tag">En curso</span></div></div>
+        <div class="tnode"><div class="knob"></div><div class="rcard"><div class="rn" data-k="r5_rn">Release 5 · DEV-1092</div><div class="rt" data-k="r5_rt">Ejecución automática de cambios</div><div class="rd" data-k="r5_rd">Aplicación automática de los cambios y recetas sin intervención manual.</div><span class="tag tg-next" data-k="r5_tag">Próximo</span></div></div>
+        <div class="tnode"><div class="knob"></div><div class="rcard"><div class="rn" data-k="r6_rn">Release 6 · DEV-1491</div><div class="rt" data-k="r6_rt">Presets de configuraciones</div><div class="rd" data-k="r6_rd">Continuación de la integración con FICS; parametrización masiva de servicios.</div><span class="tag tg-next" data-k="r6_tag">Próximo</span></div></div>
+      </div>
+      <div class="backlog-box"><div class="bl-lbl" data-k="backlog_lbl">Backlog (sin planificar)</div><ul class="bl-list" data-k="backlog_items"><li>Búsquedas DynamoDB</li><li>Retroalimentación de recetas</li><li>Trazabilidad RM–DP–FICS</li><li>Predicción de demanda</li><li>RM-Copilot microservicio</li><li>Smart HTP V2</li><li>Matriz de parametrización</li></ul></div>
+    </section>
+
+    <!-- PRÓXIMOS MILESTONES -->
+    <section>
+      <div class="shead"><span class="eyebrow" data-k="sec3_eyebrow">Próximo</span><h2 data-k="sec3_h2">Próximos milestones</h2><span class="ln"></span></div>
+      <div class="box">
+        <div class="ms-list">
+          <div class="ms next"><div class="mdate"><div class="dd">09</div><div class="mm" data-k="ms1_mm">Jun</div></div><div class="mbody"><div class="mt" data-k="ms1_t">Pasaje a producción (DEV → PRD)</div><div class="md" data-k="ms1_d">Deploy de todos los desarrollos de DEV a producción.</div><span class="mtag mt-next" data-k="ms1_tag">Próximo hito</span></div></div>
+          <div class="ms crit"><div class="mdate"><div class="dd">★</div><div class="mm" data-k="ms2_mm">Jun</div></div><div class="mbody"><div class="mt" data-k="ms2_t">Primer caso de impacto medido y documentado</div><div class="md" data-k="ms2_d">Hito que define el Compromiso 2: primer cliente con mejora de revenue documentada en $$. Sin esto no hay prueba comercial.</div><span class="mtag mt-crit" data-k="ms2_tag">Crítico</span></div></div>
+          <div class="ms"><div class="mdate"><div class="dd" style="font-size:0"><svg width="26" height="26" viewBox="0 0 24 24" fill="#98A0AD" style="display:block;margin:0 auto"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="mm" data-k="ms3_mm">Jun</div></div><div class="mbody"><div class="mt" data-k="ms3_t">3 clientes en uso activo</div><div class="md" data-k="ms3_d">La20 + Del Sur y Media Agua + Puerto Tirol. Compromiso 1.</div><span class="mtag mt-prog" data-k="ms3_tag">Casi</span></div></div>
+          <div class="ms"><div class="mdate"><div class="dd">★</div><div class="mm" data-k="ms5_mm">Clave</div></div><div class="mbody"><div class="mt" data-k="ms5_t">Integración con FICS</div><div class="md" data-k="ms5_d">Ejecución e impacto automático de las recetas en FICS (base de R5 y R6).</div><span class="mtag mt-next" data-k="ms5_tag">Punto clave</span></div></div>
+          <div class="ms"><div class="mdate"><div class="dd" style="font-size:0"><svg width="26" height="26" viewBox="0 0 24 24" fill="#98A0AD" style="display:block;margin:0 auto"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div class="mm" data-k="ms6_mm">AR · CO</div></div><div class="mbody"><div class="mt" data-k="ms6_t">Onboarding El Práctico / Berlinas</div><div class="md" data-k="ms6_d">Expansión regional en Argentina y Colombia.</div><span class="mtag mt-plan" data-k="ms6_tag">Expansión</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPROMISOS PRÓXIMA SEMANA -->
+    <section>
+      <div class="shead"><span class="eyebrow" data-k="sec4_eyebrow">Próxima semana</span><h2 data-k="sec4_h2">Compromisos — próxima semana</h2><span class="ln"></span></div>
+      <div class="box">
+        <div class="commit"><span class="cbox"></span><span class="cwho" data-k="cm1_who">POD</span><span class="cwhat" data-k="cm1_what">Ejecutar el pasaje a producción de los desarrollos de DEV (deploy 9 de junio).</span><span class="cokr k1" data-k="cm1_okr">C1</span></div>
+        <div class="commit"><span class="cbox"></span><span class="cwho" data-k="cm2_who">POD · Comercial</span><span class="cwhat" data-k="cm2_what">Estandarizar la captura de feedback e insistir en la declaración de recetas aplicadas.</span><span class="cokr k2" data-k="cm2_okr">C2</span></div>
+        <div class="commit"><span class="cbox"></span><span class="cwho" data-k="cm3_who">POD</span><span class="cwhat" data-k="cm3_what">Avanzar identificación individual de usuarios y tracking de uso.</span><span class="cokr ke" data-k="cm3_okr">Base</span></div>
+        <div class="commit"><span class="cbox"></span><span class="cwho" data-k="cm4_who">POD</span><span class="cwhat" data-k="cm4_what">Activar Dynamic Pricing en Puerto Tirol y Suma; avanzar El Práctico hacia RM.</span><span class="cokr k1" data-k="cm4_okr">C1</span></div>
+        <div class="commit"><span class="cbox"></span><span class="cwho" data-k="cm5_who">Comercial</span><span class="cwhat" data-k="cm5_what">Iniciar el alta de dos nuevos clientes con rutas competitivas: Copetran y Berlinas.</span><span class="cokr k1" data-k="cm5_okr">C1</span></div>
+        <div class="legend">
+          <span><i class="k1" style="background:var(--amber)"></i><span data-k="lg1">C1 · uso activo</span></span>
+          <span><i class="k2" style="background:var(--sis-destructive)"></i><span data-k="lg2">C2 · prueba comercial $$</span></span>
+          <span><i class="ke" style="background:var(--sis-border-strong)"></i><span data-k="lg3">Base · habilitador</span></span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer data-k="footer">Fuente: Google Sheets (Sheet3 · OKRs, épicas y tareas) · Jira (Atlassian · sisorgcloud) · planilla comercial RM.<br><b>SISORG</b> · Tablero de status al 29 de mayo de 2026 · documento de circulación interna.</footer>
+
+</div>
+
+<script>
+const I18N_EN={
+"doctitle":"RM · Status Board — SISORG","hdr_product_line":"Revenue Management","h1":"RM Status Board",
+"pill_date":"As of 05/29/2026","pill_pod":"POD: Germán · Román","pill_q":"Q2 2026 · ~4 weeks left",
+"rag_state":"At risk","rag_state_lbl":"Overall status","sum_h3":"Executive summary",
+"sum_p":"The product is progressing well: production release on Jun 9 and <b>1 of 3 clients in active use</b> (La20). The quarter's challenge is the <b>commercial proof</b>: with that 1 of 3 we haven't yet reached the engagement needed for clients to apply recipes and report results, the step that enables documenting $$ impact. The focus now is unblocking that adoption to turn product progress into a commercial case.",
+"strat_eyebrow":"Why it matters",
+"strat_title":"Revenue Management is SISORG's headline strategic bet for 2026: the driver of differentiation and new-customer acquisition.",
+"strat_body":"Q2 is the quarter to convert product capability into paying adoption and clear commercial proof. The quarter's success is measured by the two commitments below.",
+"sec_okr_eyebrow":"Quarter commitments","sec_okr_h2":"The 2 Q2 commitments",
+"okr1_num":"Commitment 1","okr1_t":"First release deployed and actively used by at least 3 enterprise clients.","okr1_frac":"1 / 3","okr1_frac_lbl":"clients in active use","okr1_bar_lbl":"Progress to goal","okr1_st":"On track","okr1_detail":"La20 already in active use. Bets to improve engagement:","okr1_p1":"Del Sur y Media Agua","okr1_p2":"Puerto Tirol","okr1_conf":"Confidence: medium",
+"okr2_num":"Commitment 2","okr2_t":"Measurable revenue-per-km or margin improvement in at least 3 clients, with documented $$ impact. Package and sell the narrative.","okr2_frac":"0 / 3","okr2_frac_lbl":"clients with documented $$","okr2_bar_lbl":"Progress to goal","okr2_st":"At risk","okr2_detail":"Nothing measured yet. Blocker: clients applying recipes and reporting results. Defining milestone: the first measured, documented case.","okr2_conf":"Confidence: TBD",
+"sec_met_eyebrow":"Key metrics","sec_met_h2":"Where we are today","m1_k":"Clients in active use","m2_k":"Clients with documented $$ impact","m3_k":"Production deploy","m4_k":"Weeks left in Q2",
+"sec_rk_eyebrow":"Risk & mitigations","sec_rk_h2":"What's blocking the quarter and what I need","rk_box_h3":"Main risk","th_risk":"Risk","th_sev":"Sev.","th_owner":"Owner","r1_name":"Client adoption & feedback","r1_desc":"With no clients applying recipes and reporting results, there are no impact numbers. Directly blocks Commitment 2.","r1_sev":"High","r1_owner":"POD · Commercial","ask_box_h3":"Mitigations","dec1_q":"Have Commercial/CSM actively push clients —starting with La20— to apply recipes and report results.","dec1_own":"Commercial / Mgmt","dec1_due":"June",
+"sec2_eyebrow":"Roadmap","sec2_h2":"Release roadmap","r2_rn":"Release 2 · DEV-1025","r2_rt":"Scalable performance","r2_rd":"Performance test and base for prediction.","r2_tag":"Complete","r3_rn":"Release 3 · DEV-1064","r3_rt":"Message optimization","r3_rd":"Measure tool usage and usability.","r3_tag":"Complete","r4_rn":"Release 4 · DEV-1074","r4_rt":"Opportunity scoring","r4_rd":"Historical curve with applied recipes; value per opportunity.","r4_tag":"In progress","r5_rn":"Release 5 · DEV-1092","r5_rt":"Automatic change execution","r5_rd":"Automatic application of changes and recipes without manual intervention.","r5_tag":"Next","r6_rn":"Release 6 · DEV-1491","r6_rt":"Configuration presets","r6_rd":"Continued FICS integration; mass parameterization of services.","r6_tag":"Next","backlog_lbl":"Backlog (unplanned)","backlog_items":"<li>DynamoDB search</li><li>Recipe feedback</li><li>RM–DP–FICS traceability</li><li>Demand prediction</li><li>RM-Copilot microservice</li><li>Smart HTP V2</li><li>Parameterization matrix</li>",
+"sec3_eyebrow":"Upcoming","sec3_h2":"Upcoming milestones","ms1_mm":"Jun","ms1_t":"Production rollout (DEV → PRD)","ms1_d":"Deploy of all DEV developments to production.","ms1_tag":"Next milestone","ms2_mm":"Jun","ms2_t":"First measured, documented impact case","ms2_d":"Milestone that defines Commitment 2: first client with documented $$ revenue improvement. No commercial proof without it.","ms2_tag":"Critical","ms3_mm":"Jun","ms3_t":"3 clients in active use","ms3_d":"La20 + Del Sur y Media Agua + Puerto Tirol. Commitment 1.","ms3_tag":"Almost","ms4_mm":"Jun·Jul","ms4_t":"Release 4 close — Opportunity scoring","ms4_d":"Historical curve with recipes and value per opportunity.","ms4_tag":"In progress","ms5_mm":"Key","ms5_t":"FICS integration","ms5_d":"Automatic execution and impact of recipes in FICS (basis for R5 and R6).","ms5_tag":"Key point","ms6_mm":"AR · CO","ms6_t":"Onboarding El Práctico / Berlinas","ms6_d":"Regional expansion in Argentina and Colombia.","ms6_tag":"Expansion",
+"sec4_eyebrow":"Next week","sec4_h2":"Commitments — next week","cm1_who":"POD","cm1_what":"Run the production rollout of the DEV developments (deploy June 9).","cm1_okr":"C1","cm2_who":"POD · Commercial","cm2_what":"Standardize feedback capture and push for declaring applied recipes.","cm2_okr":"C2","cm3_who":"POD","cm3_what":"Advance individual user identification and usage tracking.","cm3_okr":"Base","cm4_who":"POD","cm4_what":"Activate Dynamic Pricing for Puerto Tirol and Suma; move El Práctico toward RM.","cm4_okr":"C1","cm5_who":"Commercial","cm5_what":"Start onboarding two new clients with competitive routes: Copetran and Berlinas.","cm5_okr":"C1","lg1":"C1 · active use","lg2":"C2 · commercial $$ proof","lg3":"Base · enabler",
+"footer":"Source: Google Sheets (Sheet3 · OKRs, epics and tasks) · Jira (Atlassian · sisorgcloud) · RM commercial sheet.<br><b>SISORG</b> · Status board as of May 29, 2026 · internal circulation only."
+};
+const I18N_ES={
+"doctitle":"RM · Tablero de Status — SISORG","hdr_product_line":"Revenue Management","h1":"Tablero de status — RM",
+"pill_date":"Corte 29/05/2026","pill_pod":"POD: Germán · Román","pill_q":"Q2 2026 · ~4 semanas restantes",
+"rag_state":"En riesgo","rag_state_lbl":"Estado general","sum_h3":"Resumen ejecutivo",
+"sum_p":"El producto avanza con buen ritmo: release a producción el 9/6 y <b>1 de 3 clientes en uso activo</b> (La20). El desafío del quarter está en la <b>prueba comercial</b>: con ese 1 de 3 todavía no logramos el engagement necesario para que los clientes apliquen recetas y declaren resultados, que es el paso que habilita documentar el impacto en $$. El foco ahora es destrabar esa adopción para convertir el avance de producto en un caso comercial.",
+"strat_eyebrow":"Por qué importa",
+"strat_title":"Revenue Management es la apuesta estratégica de SISORG para 2026: el motor de diferenciación y de captación de nuevos clientes.",
+"strat_body":"Q2 es el quarter para convertir la capacidad de producto en adopción que paga y en una prueba comercial clara. El éxito del quarter se mide por los dos compromisos de abajo.",
+"sec_okr_eyebrow":"Compromisos del quarter","sec_okr_h2":"Los 2 compromisos del Q2",
+"okr1_num":"Compromiso 1","okr1_t":"Release desplegado y en uso activo por al menos 3 clientes enterprise.","okr1_frac":"1 / 3","okr1_frac_lbl":"clientes en uso activo","okr1_bar_lbl":"Avance hacia la meta","okr1_st":"En curso","okr1_detail":"La20 ya en uso activo. Apuestas a mejorar el engagement:","okr1_p1":"Del Sur y Media Agua","okr1_p2":"Puerto Tirol","okr1_conf":"Confianza: media",
+"okr2_num":"Compromiso 2","okr2_t":"Mejora medible de revenue-per-km o margen en al menos 3 clientes, con impacto en $$ documentado. Empaquetar y vender la narrativa.","okr2_frac":"0 / 3","okr2_frac_lbl":"clientes con $$ documentado","okr2_bar_lbl":"Avance hacia la meta","okr2_st":"En riesgo","okr2_detail":"Nada medido todavía. Bloqueo: que los clientes apliquen recetas y declaren resultados. Hito que lo define: el primer caso medido y documentado.","okr2_conf":"Confianza: por determinar",
+"sec_met_eyebrow":"Métricas clave","sec_met_h2":"Dónde estamos hoy","m1_k":"Clientes en uso activo","m2_k":"Clientes con impacto $$ documentado","m3_k":"Deploy a producción","m4_k":"Semanas restantes de Q2",
+"sec_rk_eyebrow":"Riesgo y mitigaciones","sec_rk_h2":"Qué frena el quarter y qué necesito","rk_box_h3":"Riesgo principal","th_risk":"Riesgo","th_sev":"Sev.","th_owner":"Owner","r1_name":"Adopción y feedback de clientes","r1_desc":"Sin que los clientes apliquen recetas y declaren resultados, no hay números de impacto. Bloquea directamente el Compromiso 2.","r1_sev":"Alta","r1_owner":"POD · Comercial","ask_box_h3":"Mitigaciones","dec1_q":"Que Comercial/CSM empuje activamente a los clientes —empezando por La20— a aplicar recetas y declarar resultados.","dec1_own":"Comercial / Mgmt","dec1_due":"Junio",
+"sec2_eyebrow":"Roadmap","sec2_h2":"Roadmap de releases","r2_rn":"Release 2 · DEV-1025","r2_rt":"Performance escalable","r2_rd":"Prueba de performance y base para predicción.","r2_tag":"Finalizado","r3_rn":"Release 3 · DEV-1064","r3_rt":"Optimización de mensajes","r3_rd":"Medir el uso y la usabilidad de la herramienta.","r3_tag":"Finalizado","r4_rn":"Release 4 · DEV-1074","r4_rt":"Scoring de oportunidades","r4_rd":"Curva histórica con recetas aplicadas; valor por oportunidad.","r4_tag":"En curso","r5_rn":"Release 5 · DEV-1092","r5_rt":"Ejecución automática de cambios","r5_rd":"Aplicación automática de los cambios y recetas sin intervención manual.","r5_tag":"Próximo","r6_rn":"Release 6 · DEV-1491","r6_rt":"Presets de configuraciones","r6_rd":"Continuación de la integración con FICS; parametrización masiva de servicios.","r6_tag":"Próximo","backlog_lbl":"Backlog (sin planificar)","backlog_items":"<li>Búsquedas DynamoDB</li><li>Retroalimentación de recetas</li><li>Trazabilidad RM–DP–FICS</li><li>Predicción de demanda</li><li>RM-Copilot microservicio</li><li>Smart HTP V2</li><li>Matriz de parametrización</li>",
+"sec3_eyebrow":"Próximo","sec3_h2":"Próximos milestones","ms1_mm":"Jun","ms1_t":"Pasaje a producción (DEV → PRD)","ms1_d":"Deploy de todos los desarrollos de DEV a producción.","ms1_tag":"Próximo hito","ms2_mm":"Jun","ms2_t":"Primer caso de impacto medido y documentado","ms2_d":"Hito que define el Compromiso 2: primer cliente con mejora de revenue documentada en $$. Sin esto no hay prueba comercial.","ms2_tag":"Crítico","ms3_mm":"Jun","ms3_t":"3 clientes en uso activo","ms3_d":"La20 + Del Sur y Media Agua + Puerto Tirol. Compromiso 1.","ms3_tag":"Casi","ms4_mm":"Jun·Jul","ms4_t":"Cierre de Release 4 — Scoring de oportunidades","ms4_d":"Curva histórica con recetas y valor por oportunidad.","ms4_tag":"En curso","ms5_mm":"Clave","ms5_t":"Integración con FICS","ms5_d":"Ejecución e impacto automático de las recetas en FICS (base de R5 y R6).","ms5_tag":"Punto clave","ms6_mm":"AR · CO","ms6_t":"Onboarding El Práctico / Berlinas","ms6_d":"Expansión regional en Argentina y Colombia.","ms6_tag":"Expansión",
+"sec4_eyebrow":"Próxima semana","sec4_h2":"Compromisos — próxima semana","cm1_who":"POD","cm1_what":"Ejecutar el pasaje a producción de los desarrollos de DEV (deploy 9 de junio).","cm1_okr":"C1","cm2_who":"POD · Comercial","cm2_what":"Estandarizar la captura de feedback e insistir en la declaración de recetas aplicadas.","cm2_okr":"C2","cm3_who":"POD","cm3_what":"Avanzar identificación individual de usuarios y tracking de uso.","cm3_okr":"Base","cm4_who":"POD","cm4_what":"Activar Dynamic Pricing en Puerto Tirol y Suma; avanzar El Práctico hacia RM.","cm4_okr":"C1","cm5_who":"Comercial","cm5_what":"Iniciar el alta de dos nuevos clientes con rutas competitivas: Copetran y Berlinas.","cm5_okr":"C1","lg1":"C1 · uso activo","lg2":"C2 · prueba comercial $$","lg3":"Base · habilitador",
+"footer":"Fuente: Google Sheets (Sheet3 · OKRs, épicas y tareas) · Jira (Atlassian · sisorgcloud) · planilla comercial RM.<br><b>SISORG</b> · Tablero de status al 29 de mayo de 2026 · documento de circulación interna."
+};
+function setLang(lang){
+  const dict=lang==='en'?I18N_EN:I18N_ES;
+  document.querySelectorAll('[data-k]').forEach(el=>{const k=el.getAttribute('data-k');if(dict[k]!==undefined)el.innerHTML=dict[k];});
+  document.getElementById('btn-es').classList.toggle('on',lang==='es');
+  document.getElementById('btn-en').classList.toggle('on',lang==='en');
+  document.documentElement.lang=lang;
+  document.title=lang==='en'?"RM \u00b7 Status Board \u2014 SISORG":"RM \u00b7 Tablero de Status \u2014 SISORG";
+}
+</script>
+</body>
+</html>
