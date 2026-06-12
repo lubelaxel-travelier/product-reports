@@ -669,7 +669,9 @@ if (grid) {
 
 function parseJwt(token) {
   try {
-    return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const padded = b64 + '='.repeat((4 - b64.length % 4) % 4);
+    return JSON.parse(atob(padded));
   } catch { return null; }
 }
 
@@ -726,20 +728,13 @@ function logout() {
 
 window.addEventListener('load', function() {
   const email = localStorage.getItem('sisorg_email');
-  const token = localStorage.getItem('sisorg_token');
 
-  if (email && token) {
-    // Quick check: token not expired
-    const payload = parseJwt(token);
-    const now = Math.floor(Date.now() / 1000);
-    if (payload && payload.exp && payload.exp > now) {
-      showApp(email);
-      return;
-    } else {
-      // Token expired, clear and show auth
-      localStorage.removeItem('sisorg_token');
-      localStorage.removeItem('sisorg_email');
-    }
+  // If email is stored, show the app directly — no token expiry check.
+  // Google ID tokens expire in 1h which would break back-navigation.
+  // Re-auth only happens when the user explicitly logs out.
+  if (email && email.endsWith('@sisorg.com')) {
+    showApp(email);
+    return;
   }
 
   showAuth();
