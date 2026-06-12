@@ -29,7 +29,7 @@ h1,h2,h3,h4{font-family:"Sora",sans-serif;margin:0}
 .sheet{max-width:1080px;margin:28px auto;background:#fff;box-shadow:var(--shadow-md);border-radius:14px;overflow:hidden}
 /* ---- header band ---- */
 .band{background:var(--gradient-deep);color:#fff;padding:30px 44px 40px;position:relative;overflow:hidden}
-.band::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.06) 1px,transparent 0);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent);mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent)}
+.band::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.06) 1px,transparent 0);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent);mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent)}
 .band>*{position:relative;z-index:1}
 .toprow{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:9px;font-family:"Sora";font-weight:600;font-size:18px;letter-spacing:-.01em}
