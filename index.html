@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sisorg Reports — Login</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0A2D19;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+.container {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+.logo {
+  width: 60px;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+h1 {
+  font-size: 24px;
+  color: #0A2D19;
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 2rem;
+}
+#g_id_onload {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+.error {
+  color: #E24B4A;
+  font-size: 13px;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #FCEBEB;
+  border-radius: 6px;
+  display: none;
+}
+.loading {
+  display: none;
+  text-align: center;
+  padding: 1rem;
+  color: #0A2D19;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <img src="data:image/svg+xml,%3Csvg viewBox='0 0 200 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='20' y='45' font-family='sans-serif' font-size='40' font-weight='bold' fill='%23F27E49'%3Es%3C/text%3E%3Ctext x='60' y='45' font-family='sans-serif' font-size='40' font-weight='bold' fill='%230A2D19'%3eSisorg%3C/text%3E%3C/svg%3E" alt="Sisorg" class="logo">
+  
+  <h1>Sisorg Reports</h1>
+  <p class="subtitle">Acceso restringido a @sisorg.com</p>
+  
+  <div id="g_id_onload"
+       data-client_id="916440758364-sv1oojtm8ovt1mhhb2in2tmbibh485t4.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
+  </div>
+  <div id="g_id_signin" data-type="standard"></div>
+  
+  <div class="error" id="error"></div>
+  <div class="loading" id="loading">Verificando autenticación...</div>
+</div>
+
+<script>
+function handleCredentialResponse(response) {
+  document.getElementById('loading').style.display = 'block';
+  
+  // Decodificar el JWT para obtener el email
+  const token = response.credential;
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  const email = payload.email;
+  
+  // Validar que sea @sisorg.com
+  if (email.endsWith('@sisorg.com')) {
+    // Guardar token en localStorage y redirigir a la lista de reportes
+    localStorage.setItem('token', token);
+    localStorage.setItem('email', email);
+    window.location.href = './reports.html';
+  } else {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('error').textContent = `❌ Tu email (${email}) no está autorizado. Solo @sisorg.com.`;
+  }
+}
+
+window.onload = function() {
+  // Si ya tiene token válido, redirigir directamente a reportes
+  if (localStorage.getItem('token')) {
+    window.location.href = './reports.html';
+  }
+  
+  // Renderizar el botón de Google
+  google.accounts.id.renderButton(
+    document.getElementById('g_id_signin'),
+    { 
+      theme: 'outline',
+      size: 'large',
+      width: '300'
+    }
+  );
+};
+</script>
+
+</body>
+</html>
