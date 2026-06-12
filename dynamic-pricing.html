@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamic Pricing · Tablero de Status — SISORG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="https://sisorg.com/favicon.png" type="image/png">
+<style>
+:root{
+  --sis-primary:hsl(152 69% 27%);--sis-primary-dark:hsl(152 69% 22%);--sis-primary-mid:hsl(152 69% 32%);
+  --sis-primary-soft:hsl(152 50% 75%);--sis-primary-wash:hsl(152 60% 96%);--sis-deep:hsl(152 64% 11%);
+  --sis-accent:hsl(24 85% 60%);--sis-accent-light:hsl(24 90% 75%);--sis-accent-wash:hsl(24 85% 96%);
+  --sis-bg:#FFFFFF;--sis-bg-muted:hsl(220 14% 96%);--sis-bg-soft:hsl(220 14% 98%);
+  --sis-border:hsl(220 13% 91%);--sis-border-strong:hsl(220 13% 84%);
+  --sis-ink:hsl(220 20% 20%);--sis-ink-soft:hsl(220 10% 46%);--sis-ink-mute:hsl(220 10% 60%);
+  --sis-destructive:hsl(0 84% 60%);--sis-destructive-wash:hsl(0 84% 97%);
+  --amber:#E0A82E;--amber-wash:#FBF3E0;
+  --gradient-deep:linear-gradient(135deg,hsl(152 64% 11%) 0%,hsl(152 69% 22%) 100%);
+  --radius:.5rem;--radius-lg:.75rem;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(10,45,25,.05),0 2px 8px rgba(10,45,25,.04);
+  --shadow-md:0 2px 6px rgba(10,45,25,.06),0 12px 32px rgba(10,45,25,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Inter",system-ui,sans-serif;color:var(--sis-ink);background:var(--sis-bg-muted);min-height:100vh;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Sora",sans-serif}
+.eyebrow{font-family:"Poppins",sans-serif;font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+
+.band{background:var(--gradient-deep);color:#fff;padding:32px 52px 44px;position:relative;overflow:hidden}
+.band::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.06) 1px,transparent 0);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent);mask-image:radial-gradient(ellipse 70% 100% at 85% 0%,#000,transparent)}
+.band>*{position:relative;z-index:1}
+.toprow{display:flex;align-items:center;justify-content:space-between}
+.band h1{font-weight:400;font-size:36px;letter-spacing:-.025em;margin-top:28px;color:#fff}
+.band .subrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{font-family:"Poppins";font-weight:500;font-size:11px;letter-spacing:.04em;padding:5px 14px;border-radius:var(--radius-pill);background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.20);color:#fff}
+
+.body{max-width:1080px;margin:0 auto;padding:0 52px 48px}
+
+.summary{background:#fff;border:1px solid var(--sis-border);border-left:4px solid var(--amber);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:24px 28px;margin-top:24px;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.rag{display:flex;flex-direction:column;align-items:center;gap:8px;padding-right:26px;border-right:1px solid var(--sis-border);min-width:128px}
+.rag .dot{width:46px;height:46px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 8px var(--amber-wash)}
+.rag .st{font-family:"Poppins";font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+.rag .lbl{font-family:"Poppins";font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sis-ink-mute)}
+.summary .txt h3{font-family:"Sora";font-weight:600;font-size:14px;color:var(--sis-deep);margin-bottom:10px}
+.sum-pills{display:flex;flex-wrap:wrap;gap:8px}
+.sum-pill{display:inline-flex;align-items:center;gap:7px;font-family:"Inter";font-size:13px;font-weight:500;color:var(--sis-ink);background:var(--sis-bg-soft);border:1px solid var(--sis-border);border-radius:var(--radius-pill);padding:7px 14px}
+.sum-pill .sp-icon{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sp-green{background:var(--sis-primary)}
+.sp-amber{background:var(--amber)}
+
+section{margin-top:36px}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+.shead .eyebrow{color:var(--sis-accent)}
+.shead h2{font-family:"Sora";font-weight:400;font-size:21px;letter-spacing:-.012em;color:var(--sis-deep)}
+.shead .ln{flex:1;height:1px;background:var(--sis-border)}
+
+.strat{background:var(--gradient-deep);color:#fff;border-radius:var(--radius-lg);padding:24px 28px;position:relative;overflow:hidden}
+.strat::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 60% 120% at 90% 0%,#000,transparent);mask-image:radial-gradient(ellipse 60% 120% at 90% 0%,#000,transparent)}
+.strat>*{position:relative;z-index:1}
+.strat .se{font-family:"Poppins";font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--sis-primary-soft)}
+.strat .stt{font-family:"Sora";font-weight:400;font-size:17px;line-height:1.5;margin-top:10px;color:#fff;letter-spacing:-.01em}
+
+.okr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.okr{background:#fff;border:1px solid var(--sis-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:20px 24px}
+.okr.k1{border-top:3px solid var(--sis-primary)}
+.okr.k2{border-top:3px solid var(--amber)}
+.okr .onum{font-family:"Poppins";font-weight:600;font-size:10.5px;letter-spacing:.1em;color:var(--sis-accent);text-transform:uppercase}
+.okr .otxt{font-family:"Sora";font-size:14px;line-height:1.45;color:var(--sis-deep);font-weight:600;margin:10px 0 18px}
+.okr .ofrac{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.okr .ofrac .big{font-family:"Sora";font-weight:400;font-size:32px;color:var(--sis-deep);line-height:1}
+.okr .ofrac .of-lbl{font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sis-ink-soft)}
+.okr .obar{height:7px;border-radius:var(--radius-pill);background:var(--sis-bg-muted);overflow:hidden}
+.okr .obar>span{display:block;height:100%;border-radius:var(--radius-pill)}
+.okr .ostat{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-family:"Poppins";font-size:10.5px;letter-spacing:.04em;color:var(--sis-ink-soft)}
+.okr .ostat b{font-family:"Poppins";font-weight:600;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-pill)}
+.s-ok{background:var(--sis-primary-wash);color:var(--sis-primary)}
+.s-prog{background:var(--amber-wash);color:var(--amber)}
+.okr .odetail{font-size:12.5px;line-height:1.55;color:var(--sis-ink-soft);margin-top:12px}
+.prospects{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.prospect{font-family:"Poppins";font-weight:500;font-size:10.5px;letter-spacing:.02em;padding:5px 11px;border-radius:var(--radius-pill);background:var(--sis-bg-muted);color:var(--sis-ink);border:1px dashed var(--sis-border-strong)}
+
+.mstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.metric{text-align:center;padding:18px 12px;background:#fff;border:1px solid var(--sis-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);border-top:3px solid var(--sis-primary)}
+.metric.warn{border-top-color:var(--amber)}
+.metric.risk{border-top-color:var(--sis-destructive)}
+.metric .v{font-family:"Sora";font-weight:400;font-size:32px;color:var(--sis-deep);line-height:1}
+.metric .v small{font-size:14px;color:var(--sis-ink-mute)}
+.metric .k{font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sis-ink-soft);margin-top:10px;line-height:1.4}
+
+/* TABLA CLIENTES */
+.client-table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.client-table thead{background:var(--sis-primary-wash)}
+.client-table th{font-family:"Poppins";font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:13px 16px;color:var(--sis-deep);border-bottom:2px solid var(--sis-primary);text-align:left}
+.client-table th:not(:first-child){text-align:center}
+.client-table td{font-family:"Inter";font-size:13px;padding:13px 16px;color:var(--sis-ink);border-bottom:1px solid var(--sis-border)}
+.client-table td:not(:first-child){text-align:center}
+.client-table tr:last-child td{border-bottom:none}
+.client-table tr:hover td{background:var(--sis-bg-soft)}
+
+/* STATUS CHIPS */
+.st-chip{display:inline-flex;align-items:center;gap:5px;font-family:"Poppins";font-weight:500;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:var(--radius-pill)}
+.st-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-test-active{background:var(--sis-primary-wash);color:var(--sis-primary)}
+.st-test-pending{background:var(--amber-wash);color:var(--amber)}
+.st-site-pending{background:var(--sis-destructive-wash);color:var(--sis-destructive)}
+
+.date-chip{font-family:"Poppins";font-size:11px;font-weight:500;color:var(--sis-ink-soft)}
+.ops-link{font-family:"Poppins";font-size:10.5px;font-weight:500;color:var(--sis-primary);text-decoration:none}
+.ops-link:hover{text-decoration:underline}
+
+/* ACCIONES */
+.actions-box{background:#fff;border:1px solid var(--sis-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:24px 28px}
+.dec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dec{border:1px solid var(--sis-border);border-left:3px solid var(--sis-accent);border-radius:var(--radius);padding:13px 16px}
+.dec .q{font-size:13px;font-weight:600;color:var(--sis-deep);line-height:1.45}
+.dec .meta{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+.chip{display:inline-block;font-family:"Poppins";font-weight:500;font-size:9.5px;letter-spacing:.05em;padding:3px 10px;border-radius:var(--radius-pill);text-transform:uppercase}
+.chip.due{background:var(--sis-bg-muted);color:var(--sis-ink-soft)}
+.chip.acc{background:var(--sis-destructive-wash);color:var(--sis-destructive)}
+
+/* PRÓXIMOS PASOS */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;align-items:flex-start;gap:16px;padding:16px 20px;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--sis-border);border-left:4px solid var(--sis-primary);box-shadow:var(--shadow-sm);transition:transform .2s ease}
+.step:hover{transform:translateX(4px)}
+.step.medium{border-left-color:var(--amber)}
+.step-icon{width:30px;height:30px;min-width:30px;border-radius:50%;background:var(--sis-primary);color:#fff;font-family:"Sora";font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center}
+.step.medium .step-icon{background:var(--amber)}
+.step-body{flex:1}
+.step-title{font-family:"Inter";font-weight:600;font-size:14px;color:var(--sis-ink);line-height:1.4}
+.step-meta{font-family:"Poppins";font-weight:500;font-size:11px;color:var(--sis-ink-mute);margin-top:4px;letter-spacing:.03em}
+
+footer{padding:20px 52px 32px;max-width:1080px;margin:0 auto;color:var(--sis-ink-mute);font-size:11.5px;border-top:1px solid var(--sis-border);margin-top:36px;line-height:1.7}
+footer b{color:var(--sis-ink-soft);font-weight:600}
+
+@media(max-width:880px){
+  .band,.body,footer{padding-left:28px;padding-right:28px}
+  .okr-grid,.dec-grid{grid-template-columns:1fr}
+  .mstrip{grid-template-columns:1fr 1fr}
+  .summary{grid-template-columns:1fr;gap:18px}
+  .rag{flex-direction:row;border-right:none;border-bottom:1px solid var(--sis-border);padding:0 0 16px;min-width:0;justify-content:flex-start;gap:14px}
+}
+@media(max-width:580px){.mstrip{grid-template-columns:1fr}.band h1{font-size:26px}}
+@media print{body{background:#fff}.band{padding:28px 32px 36px}footer{padding:16px 32px 24px}}
+</style>
+</head>
+<body>
+
+<div class="band">
+  <div class="toprow">
+    <img src="https://sisorg.com/images/logo.png" alt="SISORG" style="height:28px;filter:brightness(0) invert(1) opacity(.9)">
+    <div class="eyebrow" style="color:rgba(255,255,255,.55)">Revenue Management</div>
+  </div>
+  <div class="eyebrow" style="color:var(--sis-primary-soft);margin-top:28px">Dynamic Pricing — Stage 2</div>
+  <h1>Tablero de status</h1>
+  <div class="subrow">
+    <span class="pill">Corte 09/06/2026</span>
+    <span class="pill">POD B</span>
+    <span class="pill">PO: Franco</span>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- RESUMEN -->
+  <div class="summary">
+    <div class="rag">
+      <div class="dot"></div>
+      <div class="st">En progreso</div>
+      <div class="lbl">Estado general</div>
+    </div>
+    <div class="txt">
+      <h3>Resumen ejecutivo</h3>
+      <div class="sum-pills">
+        <span class="sum-pill"><span class="sp-icon sp-green"></span>QA cerrado — 56 bugs gestionados</span>
+        <span class="sum-pill"><span class="sp-icon sp-green"></span>12 stories entregadas</span>
+        <span class="sum-pill"><span class="sp-icon sp-green"></span>El Práctico en test activo</span>
+        <span class="sum-pill"><span class="sp-icon sp-amber"></span>0 clientes en producción</span>
+        <span class="sum-pill"><span class="sp-icon sp-amber"></span>2 mejoras detectadas en sesión de cliente</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POR QUÉ IMPORTA -->
+  <section>
+    <div class="shead"><span class="eyebrow">Contexto</span><h2>Por qué importa</h2><span class="ln"></span></div>
+    <div class="strat">
+      <div class="se">Propuesta de valor</div>
+      <div class="stt">Dynamic Pricing permite a las empresas de transporte modificar precios por asiento, servicio o viaje sin alterar los esquemas base de FICS. El objetivo de esta etapa es que los operadores apliquen modificadores en producción y declaren impacto real en sus ingresos.</div>
+    </div>
+  </section>
+
+  <!-- COMPROMISOS -->
+  <section>
+    <div class="shead"><span class="eyebrow">Compromisos</span><h2>Los 2 compromisos de la etapa</h2><span class="ln"></span></div>
+    <div class="okr-grid">
+
+      <div class="okr k1">
+        <div class="onum">Compromiso 1 — Calidad</div>
+        <div class="otxt">Ciclo de QA cerrado: producto estable para rollout.</div>
+        <div class="ofrac"><span class="big">56</span><span class="of-lbl">bugs totales gestionados</span></div>
+        <div class="obar"><span style="width:100%;background:var(--sis-primary)"></span></div>
+        <div class="ostat"><span>Bugs resueltos</span><b class="s-ok">Completado</b></div>
+        <div class="odetail">2 mejoras nuevas incorporadas desde la sesión con El Práctico, pendientes de sprint planning.</div>
+      </div>
+
+      <div class="okr k2">
+        <div class="onum">Compromiso 2 — Adopción</div>
+        <div class="otxt">Al menos 3 operadores con Dynamic Pricing activo en producción.</div>
+        <div class="ofrac"><span class="big">0<small style="font-size:16px"> / 3</small></span><span class="of-lbl">clientes en producción</span></div>
+        <div class="obar"><span style="width:5%;background:var(--amber)"></span></div>
+        <div class="ostat"><span>Avance hacia la meta</span><b class="s-prog">En progreso</b></div>
+        <div class="odetail">El Práctico en test activo. Pipeline de rollout:</div>
+        <div class="prospects">
+          <span class="prospect">La 20 de Junio</span>
+          <span class="prospect">ERSA</span>
+          <span class="prospect">Del Sur / Media Agua</span>
+          <span class="prospect">Puerto Tirol</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MÉTRICAS -->
+  <section>
+    <div class="shead"><span class="eyebrow">Métricas clave</span><h2>Dónde estamos hoy</h2><span class="ln"></span></div>
+    <div class="mstrip">
+      <div class="metric">
+        <div class="v">56</div>
+        <div class="k">Bugs gestionados</div>
+      </div>
+      <div class="metric">
+        <div class="v">0</div>
+        <div class="k">Bugs abiertos</div>
+      </div>
+      <div class="metric warn">
+        <div class="v">1</div>
+        <div class="k">Clientes en test</div>
+      </div>
+      <div class="metric risk">
+        <div class="v">0</div>
+        <div class="k">Clientes en producción</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABLA DE CLIENTES -->
+  <section>
+    <div class="shead"><span class="eyebrow">Rollout</span><h2>Estado por cliente</h2><span class="ln"></span></div>
+    <table class="client-table">
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Estado</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>El Práctico</strong></td>
+          <td><span class="st-chip st-test-active"><span class="st-dot"></span>Test activo</span></td>
+          <td style="font-size:12px;color:var(--sis-ink-soft)">Sitio de test creado y Dynamic Pricing deployado. Sesión con cliente realizada — 2 mejoras incorporadas al backlog.</td>
+        </tr>
+        <tr>
+          <td><strong>La 20 de Junio</strong></td>
+          <td><span class="st-chip st-test-pending"><span class="st-dot"></span>Deploy test pendiente</span></td>
+          <td style="font-size:12px;color:var(--sis-ink-soft)">Sitio de test de FICS creado. Pendiente deploy de Dynamic Pricing en test.</td>
+        </tr>
+        <tr>
+          <td><strong>ERSA</strong></td>
+          <td><span class="st-chip st-test-pending"><span class="st-dot"></span>Deploy test pendiente</span></td>
+          <td style="font-size:12px;color:var(--sis-ink-soft)">Sitio de test de FICS existente. Pendiente deploy de Dynamic Pricing en test.</td>
+        </tr>
+        <tr>
+          <td><strong>Del Sur / Media Agua</strong></td>
+          <td><span class="st-chip st-test-pending"><span class="st-dot"></span>Deploy test pendiente</span></td>
+          <td style="font-size:12px;color:var(--sis-ink-soft)">Sitio de test de FICS existente. Pendiente deploy de Dynamic Pricing en test. Cliente SUMA.</td>
+        </tr>
+        <tr>
+          <td><strong>Puerto Tirol</strong></td>
+          <td><span class="st-chip st-site-pending"><span class="st-dot"></span>Sitio pendiente</span></td>
+          <td style="font-size:12px;color:var(--sis-ink-soft)">Creación de sitio de test solicitada — <a href="https://sisorgcloud.atlassian.net/servicedesk/customer/portal/3/OPS-2237" target="_blank" class="ops-link">OPS-2237 ↗</a>. Pendiente creación y deploy.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ACCIONES NECESARIAS -->
+  <section>
+    <div class="shead"><span class="eyebrow">Seguimiento</span><h2>Acciones necesarias</h2><span class="ln"></span></div>
+    <div class="actions-box">
+      <div class="dec-grid">
+        <div class="dec">
+          <div class="q">Verificar funcionamiento del sitio en cada cliente antes de hacer rollout — el comportamiento puede variar por configuración.</div>
+          <div class="meta"><span class="chip acc">Previo a cada deploy</span></div>
+        </div>
+        <div class="dec">
+          <div class="q">Deployar Dynamic Pricing en test para ERSA y Del Sur / Media Agua.</div>
+          <div class="meta"></div>
+        </div>
+        <div class="dec">
+          <div class="q">Aguardar creación de sitio de test para Puerto Tirol (OPS-2237) y luego deployar.</div>
+          <div class="meta"></div>
+        </div>
+        <div class="dec">
+          <div class="q">Planificar mejoras detectadas en sesión El Práctico: tipos de ticket y redondeo de precios.</div>
+          <div class="meta"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMAS ITERACIONES -->
+  <section>
+    <div class="shead"><span class="eyebrow">Próximos pasos</span><h2>Próximas iteraciones</h2><span class="ln"></span></div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-icon">1</div>
+        <div class="step-body">
+          <div class="step-title">Rollout La 20 de Junio</div>
+          <div class="step-meta">Test deployado · Verificar sitio · Deploy a producción</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">2</div>
+        <div class="step-body">
+          <div class="step-title">Rollout ERSA</div>
+          <div class="step-meta">Deploy Dynamic Pricing en test · Verificar sitio · Deploy a producción</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">3</div>
+        <div class="step-body">
+          <div class="step-title">Rollout Del Sur / Media Agua</div>
+          <div class="step-meta">Deploy Dynamic Pricing en test · Verificar sitio · Deploy a producción</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">4</div>
+        <div class="step-body">
+          <div class="step-title">Rollout Puerto Tirol</div>
+          <div class="step-meta">Creación de sitio de test (OPS-2237) · Deploy en test · Verificar sitio · Deploy a producción</div>
+        </div>
+      </div>
+
+      <div class="step medium">
+        <div class="step-icon">5</div>
+        <div class="step-body">
+          <div class="step-title">Mejora: selección de tipos de ticket y medios de pago impactados por el modificador</div>
+          <div class="step-meta">Feedback de El Práctico · Planificar en sprint</div>
+        </div>
+      </div>
+
+      <div class="step medium">
+        <div class="step-icon">6</div>
+        <div class="step-body">
+          <div class="step-title">Mejora: redondeo configurable del precio modificado</div>
+          <div class="step-meta">Feedback de El Práctico · Decena / centena / quitar decimales · Planificar en sprint</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <b>SISORG · Dynamic Pricing Stage 2</b> — Corte 09/06/2026 · POD B · PO: Franco · 56 bugs gestionados · 0 abiertos · 2 mejoras en backlog<br>
+  Generado por el equipo de Producto.
+</footer>
+
+</body>
+</html>
